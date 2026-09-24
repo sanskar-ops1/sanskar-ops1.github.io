@@ -1,0 +1,1894 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nupay — AI-Powered Financial Network</title>
+  <meta name="description"
+    content="NUPAY connects digital assets, fiat and intelligent payments in one financial account. Spend where you already pay while AI helps determine how your money moves." />
+  <link rel="icon" href="./nupay_logo.svg" />
+
+  <!-- Google Fonts: Space Grotesk, Plus Jakarta Sans, JetBrains Mono, Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              lime: '#CEFF1A',
+              purple: '#8247FF',
+              dark: '#050607',
+              surface: '#0A0D12',
+            }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+            display: ['Space Grotesk', 'Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    :root {
+      --lime: #CEFF1A;
+      --purple: #8247FF;
+      --bg-dark: #050607;
+      --surface-dark: #0A0D12;
+    }
+
+    body {
+      background-color: #050607;
+      color: #EDEDED;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      overflow-x: hidden;
+    }
+
+    ::selection {
+      background-color: rgba(206, 255, 26, 0.25);
+      color: #ffffff;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #050607;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #CEFF1A;
+    }
+
+    /* Buttons */
+    .btn-pill-lime {
+      background: linear-gradient(135deg, #EAFF4F 0%, #CEFF1A 50%, #A7E600 100%);
+      color: #000000;
+      font-weight: 700;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 0 20px rgba(206, 255, 26, 0.28);
+    }
+
+    .btn-pill-lime:hover {
+      box-shadow: 0 0 32px rgba(206, 255, 26, 0.55);
+      transform: translateY(-1px) scale(1.02);
+    }
+
+    .btn-pill-purple {
+      background: linear-gradient(135deg, #9D68FF 0%, #8247FF 60%, #6929E0 100%);
+      color: #ffffff;
+      font-weight: 700;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 0 24px rgba(130, 71, 255, 0.45);
+    }
+
+    .btn-pill-purple:hover {
+      box-shadow: 0 0 36px rgba(130, 71, 255, 0.65);
+      transform: translateY(-1px) scale(1.02);
+    }
+
+    .text-gradient-lavender-lime {
+      background: linear-gradient(90deg, #E9D5FF 0%, #C084FC 45%, #CEFF1A 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    @keyframes float-subtle {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    .animate-float {
+      animation: float-subtle 5s ease-in-out infinite;
+    }
+
+    /* ── SCROLL PROGRESS INDICATOR ── */
+    #scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2.5px;
+      width: 0%;
+      background: linear-gradient(90deg, #8247FF 0%, #C084FC 50%, #CEFF1A 100%);
+      box-shadow: 0 0 12px rgba(206, 255, 26, 0.7);
+      z-index: 100;
+      transition: width 0.1s ease-out;
+      pointer-events: none;
+    }
+
+    /* ── SCROLL REVEAL SYSTEM ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.96) translateY(24px);
+      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+
+    .reveal.is-revealed,
+    .reveal-scale.is-revealed {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Stagger Delays */
+    .delay-100 {
+      transition-delay: 100ms;
+    }
+
+    .delay-150 {
+      transition-delay: 150ms;
+    }
+
+    .delay-200 {
+      transition-delay: 200ms;
+    }
+
+    .delay-250 {
+      transition-delay: 250ms;
+    }
+
+    .delay-300 {
+      transition-delay: 300ms;
+    }
+
+    .delay-350 {
+      transition-delay: 350ms;
+    }
+
+    .delay-400 {
+      transition-delay: 400ms;
+    }
+
+    .delay-500 {
+      transition-delay: 500ms;
+    }
+
+    /* Interactive Card Hover Glow Elevation */
+    .card-interactive {
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .card-interactive:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.8), 0 0 35px rgba(206, 255, 26, 0.14);
+    }
+
+    /* Floating Back to Top Button */
+    #back-to-top {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 45;
+      opacity: 0;
+      transform: translateY(16px) scale(0.9);
+      pointer-events: none;
+      transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #back-to-top.is-visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .reveal,
+      .reveal-scale {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-[#050607] text-[#EDEDED] antialiased">
+  <!-- Glowing Laser Top Scroll Progress Bar -->
+  <div id="scroll-progress"></div>
+
+  <!-- ========================================================================= -->
+  <!-- 01 — HEADER.STICKY (TOP NAVIGATION) -->
+  <!-- ========================================================================= -->
+  <header
+    class="sticky top-0 z-50 w-full bg-[#050607]/85 backdrop-blur-xl transition-all duration-300 font-sans">
+    <div class="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden opacity-[0.06]"
+      aria-hidden="true">
+      <svg width="420" height="70" viewBox="0 0 420 70" fill="none" class="text-[#CEFF1A]">
+        <path
+          d="M130 15 C150 15, 170 8, 210 8 C250 8, 270 15, 290 15 C310 15, 330 25, 330 35 C330 45, 310 55, 290 55 C270 55, 250 62, 210 62 C170 62, 150 55, 130 55 C110 55, 90 45, 90 35 C90 25, 110 15, 130 15 Z"
+          stroke="currentColor" stroke-width="0.8" stroke-dasharray="4 4" />
+        <circle cx="210" cy="35" r="22" stroke="currentColor" stroke-width="0.6" />
+      </svg>
+    </div>
+
+    <div class="w-full flex h-16 items-center justify-between px-6 sm:px-8 lg:px-12">
+      <!-- Far Top Left Brand Logo -->
+      <a href="#"
+        class="flex items-center gap-2.5 text-2xl font-bold tracking-tight text-white transition-opacity hover:opacity-90 shrink-0">
+        <svg viewBox="0 0 150 135" fill="none" class="h-8 w-auto">
+          <defs>
+            <linearGradient id="np-l1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#EAFF4F" />
+              <stop offset="35%" stop-color="#CEFF1A" />
+              <stop offset="70%" stop-color="#A7E600" />
+              <stop offset="100%" stop-color="#7DAE00" />
+            </linearGradient>
+            <linearGradient id="np-r1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#D6FF33" />
+              <stop offset="40%" stop-color="#CEFF1A" />
+              <stop offset="100%" stop-color="#7DAE00" />
+            </linearGradient>
+          </defs>
+          <path d="M75 8 L138 45 L138 90 L75 127 L12 90 L12 45 Z" fill="#0A1204" stroke="url(#np-l1)"
+            stroke-width="3" />
+          <path d="M42 45 L64 32 L108 90 L86 103 Z" fill="url(#np-l1)" />
+          <path d="M86 32 L108 45 L64 103 L42 90 Z" fill="url(#np-r1)" opacity="0.85" />
+          <circle cx="75" cy="67" r="8" fill="#FFFFFF" />
+        </svg>
+        <span class="font-display text-2xl font-bold tracking-tight text-white">Nupay</span>
+      </a>
+
+      <!-- Navigation Links with Active Indicator -->
+      <nav id="desktop-nav" class="hidden items-center gap-6 lg:gap-8 md:flex">
+        <a href="#" data-section="home"
+          class="nav-item relative flex flex-col items-center text-sm font-medium text-[#CEFF1A] drop-shadow-[0_0_12px_rgba(206,255,26,0.65)] font-semibold transition-all duration-300">
+          <span>Home</span>
+          <span
+            class="nav-dot mt-1 h-1 w-1 rounded-full bg-[#CEFF1A] shadow-[0_0_8px_#CEFF1A] transition-all duration-300 opacity-100 scale-100"></span>
+        </a>
+        <a href="#product" data-section="product"
+          class="nav-item relative flex flex-col items-center text-sm font-medium text-zinc-400 transition-all duration-300 hover:text-white">
+          <span>Architecture</span>
+          <span
+            class="nav-dot mt-1 h-1 w-1 rounded-full bg-[#CEFF1A] shadow-[0_0_8px_#CEFF1A] transition-all duration-300 opacity-0 scale-0"></span>
+        </a>
+        <a href="#intelligence" data-section="intelligence"
+          class="nav-item relative flex flex-col items-center text-sm font-medium text-zinc-400 transition-all duration-300 hover:text-white">
+          <span>AI Core</span>
+          <span
+            class="nav-dot mt-1 h-1 w-1 rounded-full bg-[#CEFF1A] shadow-[0_0_8px_#CEFF1A] transition-all duration-300 opacity-0 scale-0"></span>
+        </a>
+        <a href="#how-it-works" data-section="how-it-works"
+          class="nav-item relative flex flex-col items-center text-sm font-medium text-zinc-400 transition-all duration-300 hover:text-white">
+          <span>How it works</span>
+          <span
+            class="nav-dot mt-1 h-1 w-1 rounded-full bg-[#CEFF1A] shadow-[0_0_8px_#CEFF1A] transition-all duration-300 opacity-0 scale-0"></span>
+        </a>
+        <a href="#analytics" data-section="analytics"
+          class="nav-item relative flex flex-col items-center text-sm font-medium text-zinc-400 transition-all duration-300 hover:text-white">
+          <span>Analytics</span>
+          <span
+            class="nav-dot mt-1 h-1 w-1 rounded-full bg-[#CEFF1A] shadow-[0_0_8px_#CEFF1A] transition-all duration-300 opacity-0 scale-0"></span>
+        </a>
+        <a href="#security" data-section="security"
+          class="nav-item relative flex flex-col items-center text-sm font-medium text-zinc-400 transition-all duration-300 hover:text-white">
+          <span>Security</span>
+          <span
+            class="nav-dot mt-1 h-1 w-1 rounded-full bg-[#CEFF1A] shadow-[0_0_8px_#CEFF1A] transition-all duration-300 opacity-0 scale-0"></span>
+        </a>
+        <a href="#faq" data-section="faq"
+          class="nav-item relative flex flex-col items-center text-sm font-medium text-zinc-400 transition-all duration-300 hover:text-white">
+          <span>FAQ</span>
+          <span
+            class="nav-dot mt-1 h-1 w-1 rounded-full bg-[#CEFF1A] shadow-[0_0_8px_#CEFF1A] transition-all duration-300 opacity-0 scale-0"></span>
+        </a>
+      </nav>
+
+      <!-- Action Buttons -->
+      <div class="hidden items-center gap-4 md:flex shrink-0">
+        <button onclick="openWaitlist()"
+          class="text-sm font-semibold tracking-wide text-zinc-300 transition-colors hover:text-white">
+          Log in
+        </button>
+
+        <button onclick="openWaitlist()"
+          class="btn-pill-purple inline-flex items-center gap-1 rounded-full px-5 py-2 text-xs font-bold">
+          <span>Explore Cards</span>
+          <span class="text-[13px] font-mono">↗</span>
+        </button>
+
+        <button onclick="openWaitlist()"
+          class="btn-pill-lime inline-flex items-center gap-2 rounded-full px-5 py-2 text-xs font-bold shadow-[0_0_20px_rgba(206,255,26,0.25)]">
+          <span>Get started</span>
+        </button>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button onclick="toggleMobileMenu()" class="flex md:hidden p-2 text-zinc-400 hover:text-white">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Dropdown -->
+    <div id="mobile-menu" class="hidden border-b border-white/[0.08] bg-[#0A0C0E] px-6 py-6 md:hidden">
+      <div class="flex flex-col gap-4">
+        <a href="#" onclick="toggleMobileMenu()" class="text-sm font-medium text-[#CEFF1A]">Home</a>
+        <a href="#product" onclick="toggleMobileMenu()"
+          class="text-sm font-medium text-zinc-300 hover:text-white">Architecture</a>
+        <a href="#intelligence" onclick="toggleMobileMenu()"
+          class="text-sm font-medium text-zinc-300 hover:text-white">AI Core</a>
+        <a href="#how-it-works" onclick="toggleMobileMenu()"
+          class="text-sm font-medium text-zinc-300 hover:text-white">How it works</a>
+        <a href="#analytics" onclick="toggleMobileMenu()"
+          class="text-sm font-medium text-zinc-300 hover:text-white">Analytics</a>
+        <a href="#security" onclick="toggleMobileMenu()"
+          class="text-sm font-medium text-zinc-300 hover:text-white">Security</a>
+        <a href="#faq" onclick="toggleMobileMenu()" class="text-sm font-medium text-zinc-300 hover:text-white">FAQ</a>
+        <div class="mt-2 flex items-center justify-between border-t border-white/[0.08] pt-4">
+          <button onclick="openWaitlist()" class="text-sm font-medium text-zinc-300">Log in</button>
+          <button onclick="openWaitlist()" class="btn-pill-lime rounded-full px-5 py-2 text-xs font-bold">Get
+            started</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- 02 — SECTION.RELATIVE (HERO SECTION — FIGMA NODE 5:1423) -->
+  <!-- ========================================================================= -->
+  <section id="home" class="relative w-full overflow-hidden bg-[#050607] font-sans">
+    <!-- Figma Node 5:1424 & 5:1425 Ambient Dual Light Cones -->
+    <div
+      class="pointer-events-none absolute top-12 right-1/4 h-[550px] w-[550px] rounded-full bg-[#CEFF1A]/10 blur-[170px]">
+    </div>
+    <div
+      class="pointer-events-none absolute top-28 right-12 h-[500px] w-[500px] rounded-full bg-[#8247FF]/15 blur-[180px]">
+    </div>
+
+    <!-- MAIN HERO CONTAINER (Figma Node 5:1426 — 1400x798, pad=96,48,96,48, gap=159.42) -->
+    <div
+      class="relative mx-auto flex w-full max-w-[1400px] flex-col lg:flex-row lg:items-center justify-between px-6 sm:px-10 lg:px-12 gap-12 lg:gap-16 xl:gap-[159px] py-20 lg:py-24">
+
+      <!-- LEFT COLUMN: HERO TYPOGRAPHY & CONVERSION ACTIONS (Figma Node 5:1428 — 605x491) -->
+      <div class="z-10 flex w-full max-w-[605px] flex-col items-start text-left">
+        <!-- Subtitle Pill (Figma Node 5:1429 / 5:1430 — 293x34, pad=6,16, gap=10, mb=24) -->
+        <div
+          class="mb-6 inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-sm font-medium text-[#D4D4D8] backdrop-blur-md">
+          <span class="h-2 w-2 rounded-full bg-[#A855F7] shadow-[0_0_8px_#A855F7]"></span>
+          <span class="tracking-wide">AI-POWERED FINANCIAL NETWORK</span>
+        </div>
+
+        <!-- Headline (Figma Node 5:1436 — 550x205, fs=62, fw=700, lh=68, ls=-1.5) -->
+        <h1
+          class="font-display text-4xl sm:text-5xl lg:text-[56px] xl:text-[62px] font-bold tracking-[-1.5px] text-white leading-tight lg:leading-[68px]">
+          <span class="block">Spend your assets.</span>
+          <span class="block text-gradient-lavender-lime drop-shadow-[0_0_35px_rgba(206,255,26,0.3)]">
+            Not your
+          </span>
+          <span class="block">limits.</span>
+        </h1>
+
+        <!-- Subtitle Description (Figma Node 5:1447 — 576x80, fs=18, fw=400, lh=28, mt=24) -->
+        <p class="mt-6 max-w-[576px] text-base sm:text-lg font-normal leading-7 text-[#A1A1AA]">
+          NUPAY connects digital assets, fiat and intelligent payments in one financial account. Spend where you already
+          pay while AI helps determine how your money moves.
+        </p>
+
+        <!-- Action Row (Figma Node 5:1449 — 512x56, mt=40, gap=14) -->
+        <div class="mt-10 flex flex-wrap items-center gap-[14px]">
+          <!-- Primary Button: Get early access (Component 1 — 210x56, r=9999, gradient purple) -->
+          <button onclick="openWaitlist()"
+            class="inline-flex items-center justify-center gap-2.5 h-[56px] px-7 py-3.5 rounded-full bg-gradient-to-r from-[#9D68FF] via-[#8247FF] to-[#6929E0] text-white text-base font-bold shadow-[0_0_28px_rgba(130,71,255,0.45)] transition-transform hover:scale-105 active:scale-95 cursor-pointer">
+            <span>Get early access →</span>
+          </button>
+
+          <!-- Secondary Button: See how it works (form.input-pill-neopay 181x54 with Component 2 167x40 lime pill) -->
+          <div
+            class="inline-flex items-center rounded-full border border-white/12 bg-white/[0.04] p-1.5 backdrop-blur-md">
+            <a href="#product"
+              class="inline-flex items-center justify-center h-10 px-5 rounded-full bg-gradient-to-r from-[#EAFF4F] via-[#CEFF1A] to-[#A7E600] text-black text-sm font-bold shadow-[0_0_18px_rgba(206,255,26,0.35)] transition-transform hover:scale-105 active:scale-95 cursor-pointer">
+              <span>See how it works ↓</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Trust Badges (Figma Node 5:1463 — 463x20, mt=32, gap=24) -->
+        <div class="mt-8 flex flex-wrap items-center gap-6 text-sm text-[#A1A1AA]">
+          <div class="flex items-center gap-2">
+            <svg class="h-4 w-4 text-[#8247FF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+            <span>Best secured payment method</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="h-2 w-2 rounded-full bg-[#CEFF1A] shadow-[0_0_8px_#CEFF1A]"></span>
+            <span>1,400+ highly vetted network</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: FIGMA HIGH-RES 3D HERO VISUAL (Figma Node 5:2462 — 725x606) -->
+      <div class="relative flex w-full flex-1 flex-col items-center lg:items-end justify-center">
+        <div class="relative w-full max-w-[725px] transition-transform duration-700 hover:scale-[1.02]">
+          <img src="./figma/0_1213_1.png" alt="Nupay 3D Smart Cards and Mobile Terminal"
+            class="w-full h-auto object-contain select-none drop-shadow-[0_25px_60px_rgba(0,0,0,0.9)]" />
+        </div>
+      </div>
+
+    </div>
+
+    <!-- BOTTOM METRICS STAT RIBBON (Figma Node 5:1571 / 5:1572 — 1400x117, pad=32,48,32,48) -->
+    <div class="relative mx-auto w-full max-w-[1400px] px-6 py-8 lg:px-12">
+      <div class="grid grid-cols-1 sm:grid-cols-3 items-center justify-between gap-6 lg:gap-8 xl:gap-12">
+        <!-- Stat 1: 7M+ Active Global Clients (Figma Node 16:767) -->
+        <div class="reveal delay-100 flex items-center gap-4">
+          <img src="./figma/stat_icon_16_767.svg" alt="Active Global Clients"
+            class="h-[52px] w-[85px] object-contain flex-shrink-0 select-none" />
+          <div>
+            <div class="text-2xl font-bold text-white tracking-tight font-display leading-8">7M +</div>
+            <div class="text-xs text-[#CEFF1A] font-medium leading-4">Active Global Clients</div>
+          </div>
+        </div>
+
+        <!-- Stat 2: 458k+ Cards Issued Worldwide (Figma Node 16:891) -->
+        <div class="reveal delay-200 flex items-center gap-4">
+          <img src="./figma/stat_icon_16_891.svg" alt="Cards Issued Worldwide"
+            class="h-[52px] w-[85px] object-contain flex-shrink-0 select-none" />
+          <div>
+            <div class="text-2xl font-bold text-white tracking-tight font-display leading-8">458k +</div>
+            <div class="text-xs text-[#CEFF1A] font-medium leading-4">Cards Issued Worldwide</div>
+          </div>
+        </div>
+
+        <!-- Stat 3: 2k+ Transactions / Day (Figma Node 16:1415) -->
+        <div class="reveal delay-300 flex items-center gap-4">
+          <img src="./figma/stat_icon_16_1415.svg" alt="Transactions / Day"
+            class="h-[52px] w-[85px] object-contain flex-shrink-0 select-none" />
+          <div>
+            <div class="text-2xl font-bold text-white tracking-tight font-display leading-8">2k +</div>
+            <div class="text-xs text-[#CEFF1A] font-medium leading-4">Transactions / Day</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 03 — SECTION#PRODUCT (HOW NUPAY WORKS / ARCHITECTURE) -->
+  <!-- ========================================================================= -->
+  <section id="product"
+    class="relative w-full bg-[#050607] py-24 sm:py-32 font-sans overflow-hidden">
+    <div class="pointer-events-none absolute inset-0 flex items-center justify-center">
+      <div
+        class="absolute -top-10 left-1/2 -translate-x-64 h-[420px] w-[420px] rounded-full bg-[#CEFF1A]/[0.08] blur-[160px]">
+      </div>
+      <div
+        class="absolute top-10 left-1/2 translate-x-32 h-[400px] w-[400px] rounded-full bg-[#8247FF]/10 blur-[170px]">
+      </div>
+    </div>
+
+    <div class="relative mx-auto max-w-7xl xl:max-w-[1400px] px-6 sm:px-10 lg:px-12">
+      <!-- Tag -->
+      <div class="reveal flex items-center justify-center">
+        <div
+          class="inline-flex items-center gap-2 rounded-full border border-[#CEFF1A]/30 bg-[#CEFF1A]/10 px-4 py-1.5 text-xs font-mono font-semibold uppercase tracking-wider text-[#CEFF1A] shadow-[0_0_15px_rgba(206,255,26,0.15)]">
+          <span class="h-1.5 w-1.5 rounded-full bg-[#CEFF1A] animate-pulse"></span>
+          HOW NUPAY WORKS
+        </div>
+      </div>
+
+      <!-- Heading -->
+      <div class="reveal delay-100 mx-auto mt-6 max-w-3xl text-center">
+        <h2 class="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl leading-[1.1]">
+          <span>Everything you own.</span> <br />
+          <span class="text-gradient-lavender-lime drop-shadow-[0_0_35px_rgba(206,255,26,0.35)]">
+            One way to use it.
+          </span>
+        </h2>
+        <p class="mt-5 text-base font-normal leading-relaxed text-zinc-400 sm:text-lg">
+          NUPAY connects eligible digital assets to everyday payments through an intelligent financial layer, helping
+          route each purchase according to your preferences and available balances.
+        </p>
+      </div>
+
+      <!-- Centerpiece Architecture Flow Visual (Figma Node 5:2560) -->
+      <div class="reveal-scale delay-200 relative mt-12 mx-auto w-full max-w-[1116px] flex items-center justify-center">
+        <img src="./figma/nupay_animation.webp"
+          alt="Nupay Architecture Flow Animated: BTC and ETH routing through NEXA CORE to Nupay smart card"
+          class="w-full h-auto object-contain select-none drop-shadow-[0_25px_60px_rgba(0,0,0,0.95)]" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 04 — SECTION#FEATURES (5 CARDS GRID) -->
+  <!-- ========================================================================= -->
+  <section id="features" class="relative w-full bg-[#050607] py-24 sm:py-32 font-sans">
+    <div class="relative mx-auto max-w-7xl xl:max-w-[1400px] px-6 sm:px-10 lg:px-12">
+      <!-- Section Header -->
+      <div class="reveal mx-auto max-w-3xl text-center">
+        <div
+          class="inline-flex items-center gap-2 rounded-full border border-[#CEFF1A]/30 bg-[#CEFF1A]/10 px-4 py-1.5 text-xs font-mono font-semibold uppercase tracking-wider text-[#CEFF1A]">
+          Features & Core Capabilities
+        </div>
+        <h2
+          class="mt-6 font-display text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl leading-[1.1]">
+          <span>Intelligent spending.</span> <br />
+          <span class="text-gradient-lavender-lime">
+            Built around your rules.
+          </span>
+        </h2>
+        <p class="mt-4 text-base font-normal leading-relaxed text-zinc-400 sm:text-lg">
+          NUPAY combines intelligent routing, flexible spending and user-defined rules into one financial layer for
+          everyday payments.
+        </p>
+      </div>
+
+      <!-- 5 CARDS GRID (Node 5:1678 / 16:2316) -->
+      <div class="mt-16 grid max-w-[1304px] mx-auto grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+
+        <!-- CARD 01: SPEND ANYWHERE (Figma Node 14:882) -->
+        <div
+          class="reveal delay-100 card-interactive group relative flex flex-col justify-between overflow-hidden rounded-[24px] border border-white/[0.08] bg-black/90 p-7 backdrop-blur-xl transition-all duration-500 hover:border-[#CEFF1A]/40 hover:shadow-[0_0_50px_rgba(206,255,26,0.14)] min-h-[640px] lg:min-h-[700px] xl:h-[720px]">
+          <div
+            class="pointer-events-none absolute -right-6 -top-6 h-40 w-40 rounded-full bg-[#CEFF1A]/10 blur-[64px] group-hover:bg-[#CEFF1A]/20 transition-all duration-500">
+          </div>
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono font-bold text-[#CEFF1A] tracking-wider">FEATURE 01</span>
+              <span
+                class="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-0.5 text-[11px] font-mono tracking-wider text-zinc-300">EVERYDAY
+                PAYMENTS</span>
+            </div>
+            <h3 class="mt-5 font-display text-[30px] sm:text-[32px] font-bold tracking-tight text-white leading-[1.2]">
+              Spend <br />Anywhere
+            </h3>
+            <p class="mt-3 text-sm leading-relaxed text-zinc-400">
+              Use eligible digital assets for everyday purchases while NUPAY handles the payment flow behind the scenes.
+            </p>
+          </div>
+          <div class="my-auto py-4 flex w-full flex-1 items-center justify-center overflow-hidden">
+            <img src="./figma/card1_spend_anywhere.png" alt="Spend Anywhere"
+              class="max-h-[300px] sm:max-h-[330px] w-auto max-w-[95%] object-contain drop-shadow-[0_0_35px_rgba(206,255,26,0.12)] transition-transform duration-500 group-hover:scale-105" />
+          </div>
+          <div class="border-t border-white/[0.08] pt-4 text-xs font-mono text-zinc-400 flex items-center mt-auto">
+            <span class="flex items-center gap-2">
+              <span class="h-2 w-2 rounded-full bg-[#CEFF1A] shadow-[0_0_8px_#CEFF1A]"></span>
+              <span>Accepted at 100M+ merchant points</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- CARD 02: AI MONEY ROUTING (Figma Node 16:2316 / 5:1701) -->
+        <div
+          class="reveal delay-200 card-interactive group relative flex flex-col justify-between overflow-hidden rounded-[24px] border border-white/[0.08] bg-black/90 p-7 backdrop-blur-[24px] transition-all duration-500 hover:border-[#CEFF1A]/40 hover:shadow-[0_0_50px_rgba(206,255,26,0.14)] min-h-[640px] lg:min-h-[700px] xl:h-[720px]">
+          <!-- Ambient glow — top-right matching Figma layer blur -->
+          <div
+            class="pointer-events-none absolute -right-6 -top-6 h-40 w-40 rounded-full bg-[#8247FF]/10 blur-[64px] group-hover:bg-[#CEFF1A]/15 transition-all duration-500">
+          </div>
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono font-bold text-[#CEFF1A] tracking-wider">FEATURE 02</span>
+              <span
+                class="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-0.5 text-[10px] font-mono tracking-wider text-zinc-300">ALGORITHMIC</span>
+            </div>
+            <h3 class="mt-4 font-display text-[30px] sm:text-[32px] font-bold tracking-tight text-white leading-[1.2]">
+              AI Money<br />Routing
+            </h3>
+            <p class="mt-2 text-sm leading-relaxed text-zinc-400">
+              NUPAY evaluates eligible balances and your preferences to determine an appropriate funding source for each
+              payment.
+            </p>
+          </div>
+          <!-- CENTERPIECE: AI routing diagram — BTC / ETH / USDC / FIAT → NUPAY hub → PAY EXECUTED -->
+          <div class="my-auto py-4 flex w-full flex-1 items-center justify-center overflow-hidden">
+            <img src="./figma/card2_ai_routing.png" alt="AI Money Routing — BTC ETH USDC FIAT routing to NUPAY hub"
+              class="max-h-[300px] sm:max-h-[330px] w-auto max-w-[95%] object-contain drop-shadow-[0_0_35px_rgba(206,255,26,0.14)] transition-transform duration-500 group-hover:scale-105" />
+          </div>
+          <!-- BOTTOM ROW (Figma: div.border-t) -->
+          <div
+            class="border-t border-white/[0.08] pt-4 text-xs font-mono text-zinc-400 flex items-center justify-between mt-auto">
+            <span class="flex items-center gap-2">
+              <span class="h-2 w-2 rounded-full bg-[#CEFF1A] shadow-[0_0_8px_#CEFF1A]"></span>
+              <span>Predictive multi-pool liquidation</span>
+            </span>
+            <span
+              class="text-zinc-400 group-hover:text-[#CEFF1A] group-hover:translate-x-1 transition-all font-bold text-sm">→</span>
+          </div>
+        </div>
+
+        <!-- CARD 03: YOUR RULES. AI EXECUTION. -->
+        <div
+          class="reveal delay-300 card-interactive group relative flex flex-col justify-between overflow-hidden rounded-[24px] border border-white/[0.08] bg-black p-7 sm:p-8 backdrop-blur-xl transition-all duration-500 hover:border-[#CEFF1A]/40 hover:shadow-[0_0_50px_rgba(206,255,26,0.14)] min-h-[640px] lg:min-h-[700px] xl:h-[720px]">
+          <div
+            class="pointer-events-none absolute -right-12 -top-12 h-44 w-44 rounded-full bg-[#CEFF1A]/[0.07] blur-3xl group-hover:bg-[#CEFF1A]/[0.15] transition-all">
+          </div>
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono font-bold text-[#CEFF1A] tracking-wider">FEATURE 03</span>
+              <span
+                class="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] font-mono tracking-wider text-zinc-300">YOUR
+                RULES</span>
+            </div>
+            <h3
+              class="mt-5 font-display text-3xl sm:text-[32px] lg:text-[34px] font-bold tracking-tight text-white leading-[1.15]">
+              Your Rules. <br />AI Execution.
+            </h3>
+            <p class="mt-3 text-sm leading-relaxed text-zinc-400">
+              Set spending preferences once. NUPAY applies them when eligible payments are routed.
+            </p>
+          </div>
+          <div class="my-auto py-2 sm:py-3 flex w-full flex-1 items-center justify-center overflow-hidden">
+            <img src="./figma/card3_your_rules.png" alt="Your Rules AI Execution — BTC USDC Payments isometric cubes"
+              class="max-h-[360px] sm:max-h-[390px] xl:max-h-[415px] w-auto max-w-[96%] object-contain drop-shadow-[0_0_40px_rgba(168,85,247,0.25)] transition-transform duration-500 group-hover:scale-105" />
+          </div>
+          <div
+            class="border-t border-white/[0.08] pt-4.5 text-xs font-mono text-zinc-400 flex items-center justify-between mt-auto">
+            <span class="flex items-center gap-2">
+              <span class="h-2 w-2 rounded-full bg-[#CEFF1A] shadow-[0_0_8px_#CEFF1A]"></span>
+              <span>Trusted by 60M+ merchant points</span>
+            </span>
+            <span
+              class="text-zinc-400 group-hover:text-[#CEFF1A] group-hover:translate-x-1 transition-all font-bold text-sm">→</span>
+          </div>
+        </div>
+
+        <!-- CARD 04: ONE LAYER. EVERY PAYMENT. -->
+        <div
+          class="reveal delay-150 card-interactive group relative flex flex-col justify-between overflow-hidden rounded-[24px] border border-white/[0.08] bg-black p-7 sm:p-8 backdrop-blur-xl transition-all duration-500 hover:border-[#CEFF1A]/40 hover:shadow-[0_0_50px_rgba(206,255,26,0.14)] min-h-[580px] lg:min-h-[620px] xl:h-[656px]">
+          <div
+            class="pointer-events-none absolute -right-12 -top-12 h-44 w-44 rounded-full bg-[#CEFF1A]/[0.07] blur-3xl group-hover:bg-[#CEFF1A]/[0.15] transition-all">
+          </div>
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono font-bold text-[#CEFF1A] tracking-wider">FEATURE 04</span>
+              <span
+                class="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] font-mono tracking-wider text-zinc-300">PAYMENT
+                NETWORK</span>
+            </div>
+            <h3
+              class="mt-5 font-display text-3xl sm:text-[32px] lg:text-[34px] font-bold tracking-tight text-white leading-[1.15]">
+              One Layer. <br />Every Payment.
+            </h3>
+            <p class="mt-3 text-sm leading-relaxed text-zinc-400">
+              NUPAY connects your eligible assets, intelligence layer and payment experience through one unified
+              financial network.
+            </p>
+          </div>
+          <div class="my-auto py-2 sm:py-3 flex w-full flex-1 items-center justify-center overflow-hidden">
+            <img src="./figma/card4_one_layer.png" alt="One Layer Every Payment — NEXA AI BRAIN network"
+              class="max-h-[340px] sm:max-h-[370px] xl:max-h-[390px] w-auto max-w-[96%] object-contain drop-shadow-[0_0_35px_rgba(206,255,26,0.22)] transition-transform duration-500 group-hover:scale-105" />
+          </div>
+          <div
+            class="border-t border-white/[0.08] pt-4.5 text-xs font-mono text-zinc-400 flex items-center justify-between mt-auto">
+            <span class="flex items-center gap-2">
+              <span class="h-2 w-2 rounded-full bg-[#CEFF1A] shadow-[0_0_8px_#CEFF1A]"></span>
+              <span>Accepted at 100M+ merchant points</span>
+            </span>
+            <span
+              class="text-zinc-400 group-hover:text-[#CEFF1A] group-hover:translate-x-1 transition-all font-bold text-sm">→</span>
+          </div>
+        </div>
+
+        <!-- CARD 05: GLOBAL BY DESIGN -->
+        <div
+          class="reveal delay-250 card-interactive group relative flex flex-col justify-between overflow-hidden rounded-[24px] border border-white/[0.08] bg-black p-7 sm:p-8 backdrop-blur-xl transition-all duration-500 md:col-span-2 lg:col-span-2 hover:border-[#CEFF1A]/40 hover:shadow-[0_0_50px_rgba(206,255,26,0.14)] min-h-[580px] lg:min-h-[620px] xl:h-[656px]">
+          <div
+            class="pointer-events-none absolute -right-12 -top-12 h-44 w-44 rounded-full bg-[#CEFF1A]/[0.07] blur-3xl group-hover:bg-[#CEFF1A]/[0.15]">
+          </div>
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono font-bold text-[#CEFF1A] tracking-wider">FEATURE 05</span>
+              <span
+                class="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] font-mono tracking-wider text-zinc-300">WORLDWIDE</span>
+            </div>
+            <h3
+              class="mt-5 font-display text-3xl sm:text-[32px] lg:text-[34px] font-bold tracking-tight text-white leading-[1.15]">
+              Global by <br />Design
+            </h3>
+            <p class="mt-3 text-sm leading-relaxed text-zinc-400 max-w-xl">
+              Manage eligible currencies through one account and spend across markets without switching between
+              financial apps.
+            </p>
+          </div>
+          <div class="my-auto py-2 sm:py-3 flex w-full flex-1 items-center justify-center overflow-hidden">
+            <img src="./figma/6_2341_1.png" alt="Global by Design — worldwide currency globe"
+              class="max-h-[420px] sm:max-h-[460px] xl:max-h-[490px] w-auto max-w-[96%] object-contain drop-shadow-[0_0_45px_rgba(206,255,26,0.22)] transition-transform duration-500 group-hover:scale-105" />
+          </div>
+          <div
+            class="border-t border-white/[0.08] pt-4.5 text-xs font-mono text-zinc-400 flex items-center justify-between mt-auto">
+            <span class="flex items-center gap-2">
+              <span class="h-2 w-2 rounded-full bg-[#CEFF1A] shadow-[0_0_8px_#CEFF1A]"></span>
+              <span>Zero foreign exchange penalty markup</span>
+            </span>
+            <span class="text-zinc-500 font-mono text-[11px] tracking-wider">REAL-TIME FOREX INTERBANK</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 05 — SECTION#INTELLIGENCE (AI / TECHNOLOGY CORE) -->
+  <!-- ========================================================================= -->
+  <section id="intelligence"
+    class="relative w-full bg-[#050607] py-24 sm:py-32 font-sans overflow-hidden">
+    <div class="pointer-events-none absolute inset-0 flex items-center justify-center">
+      <div class="h-[650px] w-[650px] rounded-full bg-[#CEFF1A]/[0.06] blur-[180px]"></div>
+      <div class="h-[500px] w-[500px] translate-x-40 translate-y-20 rounded-full bg-[#8247FF]/[0.08] blur-[180px]">
+      </div>
+    </div>
+
+    <div class="relative mx-auto max-w-7xl xl:max-w-[1400px] px-6 sm:px-10 lg:px-12">
+      <!-- Tag -->
+      <div class="reveal flex items-center justify-between">
+        <div
+          class="inline-flex items-center gap-2 rounded-full border border-[#CEFF1A]/30 bg-[#CEFF1A]/10 px-4 py-1.5 text-xs font-mono font-semibold uppercase tracking-wider text-[#CEFF1A] shadow-[0_0_15px_rgba(206,255,26,0.15)]">
+          <span class="h-1.5 w-1.5 rounded-full bg-[#CEFF1A] animate-pulse"></span>
+          AI / TECHNOLOGY CORE
+        </div>
+      </div>
+
+      <!-- Heading -->
+      <div class="reveal delay-100 mx-auto mt-6 max-w-3xl text-center">
+        <h2 class="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl leading-[1.1]">
+          <span>An intelligence layer</span> <br />
+          <span class="text-gradient-lavender-lime drop-shadow-[0_0_35px_rgba(206,255,26,0.35)]">
+            between you and your money.
+          </span>
+        </h2>
+        <p class="mt-5 text-base font-normal leading-relaxed text-zinc-400 sm:text-lg">
+          NUPAY Intelligence brings your assets, spending preferences and payment intent together to determine how each
+          eligible payment should be funded.
+        </p>
+      </div>
+
+      <!-- Centerpiece Image Clean without container -->
+      <div class="reveal-scale delay-150 relative mt-12 mx-auto w-full max-w-5xl flex items-center justify-center">
+        <img src="./figma/7_chatgpt_image_sep_20__2026__04_14_00_pm_1.png" alt="AI Technology Core Centerpiece"
+          class="w-full h-auto object-contain select-none drop-shadow-[0_25px_60px_rgba(0,0,0,0.95)]" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 06 — SECTION#HOW-IT-WORKS (4 TRANSFORMATION CARDS) -->
+  <!-- ========================================================================= -->
+  <section id="how-it-works"
+    class="relative w-full bg-[#050607] py-24 sm:py-32 font-sans overflow-hidden scroll-mt-20">
+    <!-- Background ambient lighting -->
+    <div class="pointer-events-none absolute inset-0 flex items-center justify-center">
+      <div
+        class="absolute top-1/4 left-1/2 -translate-x-1/2 h-[500px] w-[500px] rounded-full bg-[#CEFF1A]/[0.06] blur-[180px]">
+      </div>
+    </div>
+
+    <div class="relative mx-auto max-w-7xl xl:max-w-[1300px] px-6 sm:px-10 lg:px-8">
+      <!-- Tag -->
+      <div class="reveal flex items-center justify-center">
+        <div
+          class="inline-flex items-center gap-2 rounded-full border border-[#CEFF1A]/30 bg-[#CEFF1A]/10 px-4 py-1.5 text-xs font-mono font-semibold uppercase tracking-wider text-[#CEFF1A] shadow-[0_0_15px_rgba(206,255,26,0.15)]">
+          <span class="h-1.5 w-1.5 rounded-full bg-[#CEFF1A] animate-pulse"></span>
+          06 — HOW IT WORKS
+        </div>
+      </div>
+
+      <!-- Heading -->
+      <div class="reveal delay-100 mx-auto mt-6 max-w-5xl text-center overflow-hidden">
+        <h2 class="font-display font-bold tracking-tight text-white leading-[1.1]">
+          <span
+            class="block text-3xl sm:text-4xl md:text-5xl lg:text-[54px] xl:text-[60px] whitespace-normal sm:whitespace-nowrap">
+            From your assets to your next payment.
+          </span>
+          <span
+            class="block mt-2 sm:mt-3 text-2xl sm:text-3xl md:text-4xl lg:text-[44px] xl:text-[52px] text-gradient-lavender-lime drop-shadow-[0_0_35px_rgba(206,255,26,0.35)] whitespace-normal sm:whitespace-nowrap">
+            NUPAY handles the path in between.
+          </span>
+        </h2>
+        <p class="mt-4 text-base font-normal leading-relaxed text-zinc-400 sm:text-lg max-w-3xl mx-auto">
+          Hold your eligible assets, pay with NUPAY, and let NUPAY Intelligence determine the appropriate funding path
+          for the payment.
+        </p>
+      </div>
+
+      <!-- 4 STAGE TRANSFORMATION CARDS FROM FIGMA (SMOOTH EDGES) -->
+      <div class="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1300px] mx-auto">
+        <div
+          class="reveal delay-100 card-interactive group relative transition-all duration-500 hover:-translate-y-1.5 cursor-pointer rounded-[17px] overflow-hidden">
+          <img src="./figma/8_chatgpt_image_sep_20__2026__03_46_12_pm_1.png" alt="Stage 01: Hold"
+            class="w-full h-auto object-contain select-none transition-transform duration-500 group-hover:scale-[1.02] drop-shadow-[0_15px_30px_rgba(0,0,0,0.8)] group-hover:drop-shadow-[0_0_25px_rgba(206,255,26,0.25)] rounded-[17px]" />
+        </div>
+
+        <div
+          class="reveal delay-200 card-interactive group relative transition-all duration-500 hover:-translate-y-1.5 cursor-pointer rounded-[17px] overflow-hidden">
+          <img src="./figma/9_chatgpt_image_sep_20__2026__03_49_09_pm_1.png" alt="Stage 02: Tap"
+            class="w-full h-auto object-contain select-none transition-transform duration-500 group-hover:scale-[1.02] drop-shadow-[0_15px_30px_rgba(0,0,0,0.8)] group-hover:drop-shadow-[0_0_25px_rgba(206,255,26,0.25)] rounded-[17px]" />
+        </div>
+
+        <div
+          class="reveal delay-300 card-interactive group relative transition-all duration-500 hover:-translate-y-1.5 cursor-pointer rounded-[17px] overflow-hidden">
+          <img src="./figma/10_chatgpt_image_sep_20__2026__03_50_17_pm_1.png" alt="Stage 03: Route"
+            class="w-full h-auto object-contain select-none transition-transform duration-500 group-hover:scale-[1.02] drop-shadow-[0_15px_30px_rgba(0,0,0,0.8)] group-hover:drop-shadow-[0_0_25px_rgba(206,255,26,0.25)] rounded-[17px]" />
+        </div>
+
+        <div
+          class="reveal delay-400 card-interactive group relative transition-all duration-500 hover:-translate-y-1.5 cursor-pointer rounded-[17px] overflow-hidden">
+          <img src="./figma/11_chatgpt_image_sep_20__2026__03_51_24_pm_1.png" alt="Stage 04: Settle"
+            class="w-full h-auto object-contain select-none transition-transform duration-500 group-hover:scale-[1.02] drop-shadow-[0_15px_30px_rgba(0,0,0,0.8)] group-hover:drop-shadow-[0_0_25px_rgba(206,255,26,0.25)] rounded-[17px]" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 07 — SECTION#ANALYTICS (FINANCIAL INTELLIGENCE) -->
+  <!-- ========================================================================= -->
+  <section id="analytics"
+    class="relative w-full bg-[#050607] py-24 sm:py-32 font-sans overflow-hidden">
+    <div class="relative mx-auto max-w-7xl xl:max-w-[1400px] px-6 sm:px-10 lg:px-12">
+      <!-- Tag -->
+      <div class="reveal flex items-center justify-between">
+        <div
+          class="inline-flex items-center gap-2 rounded-full border border-[#CEFF1A]/30 bg-[#CEFF1A]/10 px-4 py-1.5 text-xs font-mono font-semibold uppercase tracking-wider text-[#CEFF1A] shadow-[0_0_15px_rgba(206,255,26,0.15)]">
+          <span class="h-1.5 w-1.5 rounded-full bg-[#CEFF1A] animate-pulse"></span>
+          FINANCIAL INTELLIGENCE
+        </div>
+      </div>
+
+      <!-- Heading -->
+      <div class="reveal delay-100 mx-auto mt-6 max-w-3xl text-center">
+        <h2 class="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl leading-[1.1]">
+          <span>See where your money moves.</span> <br />
+          <span class="text-gradient-lavender-lime drop-shadow-[0_0_35px_rgba(206,255,26,0.35)]">
+            At a glance.
+          </span>
+        </h2>
+        <p class="mt-4 text-base font-normal leading-relaxed text-zinc-400 sm:text-lg">
+          See your assets, spending and available balance in one place, with the context behind every movement.
+        </p>
+      </div>
+
+      <!-- 2 CARDS GRID (Live Animated Valuation Curve & Glass Pillars) -->
+      <div id="analytics-cards" class="mt-14 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-stretch">
+        <!-- Card 1: Valuation Curve Graph Card (Live Animated Component) -->
+        <div
+          id="valuation-card"
+          class="reveal delay-150 card-interactive group relative flex flex-col justify-between overflow-hidden rounded-[26px] border border-white/[0.08] bg-[#0A0D11]/95 p-6 sm:p-8 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.85)] min-h-[460px] lg:col-span-7 transition-all duration-500 hover:border-[#CEFF1A]/30">
+          
+          <!-- Subtle ambient inner glow -->
+          <div class="pointer-events-none absolute -left-12 -top-12 h-44 w-44 rounded-full bg-[#CEFF1A]/10 blur-[60px]"></div>
+
+          <!-- Top Row: Valuation Metrics & Time Filters -->
+          <div class="relative z-10 flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <div class="text-[11px] sm:text-xs font-mono font-bold tracking-wider text-zinc-400 uppercase">
+                TOTAL UNIFIED VALUATION
+              </div>
+              <div class="mt-2 flex items-baseline gap-3">
+                <span id="valuation-counter" class="font-display text-3xl sm:text-4xl lg:text-[42px] font-bold tracking-tight text-white leading-none">
+                  $0
+                </span>
+              </div>
+              <div class="mt-2.5 flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#CEFF1A]">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>
+                <span id="percent-counter">+0.0%</span>
+                <span id="diff-counter" class="text-zinc-400 font-normal font-mono text-xs">(+$0)</span>
+              </div>
+            </div>
+
+            <!-- Time Filter Pills -->
+            <div class="flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.03] p-1 backdrop-blur-md">
+              <button type="button" onclick="switchTimeFilter(this, '1M')" class="time-filter-btn px-3 py-1 text-xs font-mono font-semibold rounded-full text-zinc-400 hover:text-white transition-colors">1M</button>
+              <button type="button" onclick="switchTimeFilter(this, '3M')" class="time-filter-btn px-3 py-1 text-xs font-mono font-semibold rounded-full text-zinc-400 hover:text-white transition-colors">3M</button>
+              <button type="button" onclick="switchTimeFilter(this, '6M')" class="time-filter-btn active-filter px-3.5 py-1 text-xs font-mono font-bold rounded-full bg-[#CEFF1A] text-black shadow-[0_0_16px_rgba(206,255,26,0.55)]">6M</button>
+              <button type="button" onclick="switchTimeFilter(this, '1Y')" class="time-filter-btn px-3 py-1 text-xs font-mono font-semibold rounded-full text-zinc-400 hover:text-white transition-colors">1Y</button>
+            </div>
+          </div>
+
+          <!-- Interactive SVG Curve Canvas -->
+          <div class="relative mt-4 w-full h-[240px] sm:h-[260px] flex items-end">
+            <svg id="valuation-chart-svg" viewBox="0 0 640 250" class="w-full h-full overflow-visible" preserveAspectRatio="none">
+              <defs>
+                <!-- Curve Neon Stroke Gradient -->
+                <linearGradient id="valCurveStroke" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#CEFF1A" />
+                  <stop offset="50%" stop-color="#CEFF1A" />
+                  <stop offset="78%" stop-color="#C084FC" />
+                  <stop offset="100%" stop-color="#9333EA" />
+                </linearGradient>
+
+                <!-- Gradient Area Fill -->
+                <linearGradient id="valCurveFill" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#CEFF1A" stop-opacity="0.32" />
+                  <stop offset="45%" stop-color="#CEFF1A" stop-opacity="0.10" />
+                  <stop offset="100%" stop-color="#050607" stop-opacity="0.0" />
+                </linearGradient>
+
+                <!-- Neon Glow Filter -->
+                <filter id="valNeonGlow" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur stdDeviation="3.5" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+
+              <!-- Horizontal Grid Lines -->
+              <line x1="20" y1="80" x2="620" y2="80" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+              <line x1="20" y1="145" x2="620" y2="145" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+              <line x1="20" y1="210" x2="620" y2="210" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+
+              <!-- RISING GRAPH GROUP: Curve + Area Fill (scaleY from bottom) -->
+              <g id="val-curve-group" style="transform-origin: 320px 210px; transform: scaleY(0); transition: transform 2.4s cubic-bezier(0.16, 1, 0.3, 1);">
+                <!-- Shaded Area Under Curve -->
+                <path
+                  d="M 30,175 C 90,170 130,150 175,130 C 230,105 275,55 320,55 C 365,55 410,120 455,150 C 510,180 560,182 610,184 L 610,210 L 30,210 Z"
+                  fill="url(#valCurveFill)"
+                />
+
+                <!-- Vibrant Neon Blurred Shadow -->
+                <path
+                  d="M 30,175 C 90,170 130,150 175,130 C 230,105 275,55 320,55 C 365,55 410,120 455,150 C 510,180 560,182 610,184"
+                  fill="none"
+                  stroke="url(#valCurveStroke)"
+                  stroke-width="5"
+                  stroke-linecap="round"
+                  filter="url(#valNeonGlow)"
+                  opacity="0.8"
+                />
+
+                <!-- Crisp Vector Stroke -->
+                <path
+                  id="valuation-curve-path"
+                  d="M 30,175 C 90,170 130,150 175,130 C 230,105 275,55 320,55 C 365,55 410,120 455,150 C 510,180 560,182 610,184"
+                  fill="none"
+                  stroke="url(#valCurveStroke)"
+                  stroke-width="2.8"
+                  stroke-linecap="round"
+                />
+              </g>
+
+              <!-- TRAVELING GLOWING DOT & TOOLTIP BADGE -->
+              <g id="val-dot-group" transform="translate(30, 175)">
+                <!-- Pulsing Outer Ring -->
+                <circle cx="0" cy="0" r="10" fill="none" stroke="#CEFF1A" stroke-width="1.5" class="animate-ping opacity-60" />
+                <!-- Glowing Outer Dot -->
+                <circle cx="0" cy="0" r="6" fill="#CEFF1A" filter="drop-shadow(0 0 10px #CEFF1A)" />
+                <!-- Crisp White Center -->
+                <circle cx="0" cy="0" r="3" fill="#FFFFFF" />
+                <!-- Tooltip Stem Line -->
+                <line x1="0" y1="-6" x2="0" y2="-15" stroke="#CEFF1A" stroke-width="1.2" opacity="0.8" />
+                
+                <!-- Tooltip Badge ($284.9K) -->
+                <g transform="translate(0, -25)">
+                  <rect x="-34" y="-12" width="68" height="23" rx="11.5" fill="#0A0E08" stroke="#CEFF1A" stroke-width="1.2" filter="drop-shadow(0 0 10px rgba(206,255,26,0.4))" />
+                  <text id="dot-badge-text" x="0" y="3.5" text-anchor="middle" font-family="'Space Grotesk', 'Plus Jakarta Sans', monospace" font-size="11" font-weight="700" fill="#FFFFFF">$0K</text>
+                </g>
+              </g>
+
+              <!-- X-Axis Month Labels -->
+              <text x="35" y="238" fill="#71717A" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="600">AUG</text>
+              <text x="175" y="238" fill="#71717A" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="600">SER</text>
+              <text x="320" y="238" fill="#E4E4E7" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700">OCT</text>
+              <text x="455" y="238" fill="#71717A" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="600">NOV</text>
+              <text x="595" y="238" fill="#71717A" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="600">DEC</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Card 2: Asset Allocation Topology Glass Pillars (Live Animated Component) -->
+        <div
+          id="topology-card"
+          class="reveal delay-300 card-interactive group relative flex flex-col justify-between overflow-hidden rounded-[26px] border border-white/[0.08] bg-[#0A0D11]/95 p-6 sm:p-7 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.85)] min-h-[460px] lg:col-span-5 transition-all duration-500 hover:border-[#CEFF1A]/30">
+          
+          <!-- Subtle ambient inner glow -->
+          <div class="pointer-events-none absolute -right-12 -top-12 h-44 w-44 rounded-full bg-[#CEFF1A]/10 blur-[60px]"></div>
+
+          <!-- Top Row: Header & Physical Height Model Badge -->
+          <div class="relative z-10 flex flex-wrap items-center justify-between gap-3">
+            <div class="text-[11px] sm:text-xs font-mono font-bold tracking-wider text-zinc-400 uppercase">
+              ASSET ALLOCATION TOPOLOGY
+            </div>
+            <div class="inline-flex items-center rounded-full border border-[#CEFF1A]/40 bg-[#CEFF1A]/10 px-2.5 py-0.5 text-[10px] font-mono font-bold tracking-wider text-[#CEFF1A] uppercase">
+              PHYSICAL HEIGHT MODEL
+            </div>
+          </div>
+
+          <!-- Legend Row -->
+          <div class="relative z-10 mt-3 flex items-center gap-4 text-xs font-mono font-medium">
+            <div class="flex items-center gap-1.5">
+              <span class="h-2 w-2 rounded-full bg-[#CEFF1A] shadow-[0_0_8px_#CEFF1A]"></span>
+              <span class="text-zinc-300 font-semibold">BTC</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="h-2 w-2 rounded-full bg-[#EAFF4F] shadow-[0_0_8px_#EAFF4F]"></span>
+              <span class="text-zinc-300 font-semibold">USDC</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="h-2 w-2 rounded-full bg-[#A855F7] shadow-[0_0_8px_#A855F7]"></span>
+              <span class="text-zinc-300 font-semibold">ETH</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="h-2 w-2 rounded-full bg-[#2DD4BF] shadow-[0_0_8px_#2DD4BF]"></span>
+              <span class="text-zinc-300 font-semibold">FIAT</span>
+            </div>
+          </div>
+
+          <!-- 4 Pillars Visualization Container -->
+          <div class="relative my-4 grid grid-cols-4 items-end gap-2 sm:gap-3.5 h-[230px] sm:h-[240px]">
+            <!-- Column 1: BTC (48%) -->
+            <div class="flex flex-col items-center justify-end h-full">
+              <div class="pillar-pct font-display text-sm sm:text-base font-bold text-white mb-2" data-target="48">0%</div>
+              <div class="pillar-bar-wrapper w-full flex items-end justify-center" style="transform-origin: bottom; transform: scaleY(0); transition: transform 2.2s cubic-bezier(0.16, 1, 0.3, 1);">
+                <img src="./clean_pillar_btc.png" alt="BTC 3D Glass Pillar" class="w-full max-w-[62px] sm:max-w-[72px] h-auto object-contain select-none drop-shadow-[0_6px_20px_rgba(206,255,26,0.30)]" />
+              </div>
+              <div class="mt-2.5 text-center">
+                <div class="text-xs sm:text-sm font-bold text-white tracking-tight">BTC</div>
+                <div class="pillar-amount text-[10px] sm:text-[11px] font-mono text-zinc-400" data-target="136761.50">$0</div>
+              </div>
+            </div>
+
+            <!-- Column 2: USDC (27%) -->
+            <div class="flex flex-col items-center justify-end h-full">
+              <div class="pillar-pct font-display text-sm sm:text-base font-bold text-white mb-2" data-target="27">0%</div>
+              <div class="pillar-bar-wrapper w-full flex items-end justify-center" style="transform-origin: bottom; transform: scaleY(0); transition: transform 2.2s cubic-bezier(0.16, 1, 0.3, 1) 180ms;">
+                <img src="./clean_pillar_usdc.png" alt="USDC 3D Glass Pillar" class="w-full max-w-[62px] sm:max-w-[72px] h-auto object-contain select-none drop-shadow-[0_6px_20px_rgba(234,255,79,0.25)]" />
+              </div>
+              <div class="mt-2.5 text-center">
+                <div class="text-xs sm:text-sm font-bold text-white tracking-tight">USDC</div>
+                <div class="pillar-amount text-[10px] sm:text-[11px] font-mono text-zinc-400" data-target="76928.40">$0</div>
+              </div>
+            </div>
+
+            <!-- Column 3: ETH (15%) -->
+            <div class="flex flex-col items-center justify-end h-full">
+              <div class="pillar-pct font-display text-sm sm:text-base font-bold text-white mb-2" data-target="15">0%</div>
+              <div class="pillar-bar-wrapper w-full flex items-end justify-center" style="transform-origin: bottom; transform: scaleY(0); transition: transform 2.2s cubic-bezier(0.16, 1, 0.3, 1) 360ms;">
+                <img src="./clean_pillar_eth.png" alt="ETH 3D Glass Pillar" class="w-full max-w-[62px] sm:max-w-[72px] h-auto object-contain select-none drop-shadow-[0_6px_20px_rgba(168,85,247,0.30)]" />
+              </div>
+              <div class="mt-2.5 text-center">
+                <div class="text-xs sm:text-sm font-bold text-white tracking-tight">ETH</div>
+                <div class="pillar-amount text-[10px] sm:text-[11px] font-mono text-zinc-400" data-target="42738.00">$0</div>
+              </div>
+            </div>
+
+            <!-- Column 4: FIAT (10%) -->
+            <div class="flex flex-col items-center justify-end h-full">
+              <div class="pillar-pct font-display text-sm sm:text-base font-bold text-white mb-2" data-target="10">0%</div>
+              <div class="pillar-bar-wrapper w-full flex items-end justify-center" style="transform-origin: bottom; transform: scaleY(0); transition: transform 2.2s cubic-bezier(0.16, 1, 0.3, 1) 540ms;">
+                <img src="./clean_pillar_fiat.png" alt="FIAT 3D Glass Pillar" class="w-full max-w-[62px] sm:max-w-[72px] h-auto object-contain select-none drop-shadow-[0_6px_20px_rgba(45,212,191,0.30)]" />
+              </div>
+              <div class="mt-2.5 text-center">
+                <div class="text-xs sm:text-sm font-bold text-white tracking-tight">FIAT</div>
+                <div class="pillar-amount text-[10px] sm:text-[11px] font-mono text-zinc-400" data-target="23492.00">$0</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Telemetry Footer -->
+          <div class="relative z-10 border-t border-white/[0.06] pt-3.5 flex items-center justify-between text-[11px] sm:text-xs font-mono">
+            <span class="text-zinc-400">Auto-rebalancing algorithm: <span class="text-zinc-200 font-semibold">ACTIVE</span></span>
+            <span class="text-[#CEFF1A] font-semibold flex items-center gap-1">
+              <span>▲</span> 0.02% Deviation
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 08 — SECTION#SECURITY (TRUST & SECURITY) -->
+  <!-- ========================================================================= -->
+  <section id="security"
+    class="relative w-full bg-[#050607] py-24 sm:py-32 font-sans overflow-hidden">
+    <div class="relative mx-auto max-w-7xl xl:max-w-[1400px] px-6 sm:px-10 lg:px-12">
+      <!-- Tag -->
+      <div class="reveal flex items-center justify-between">
+        <div
+          class="inline-flex items-center gap-2 rounded-full border border-[#CEFF1A]/30 bg-[#CEFF1A]/10 px-4 py-1.5 text-xs font-mono font-semibold uppercase tracking-wider text-[#CEFF1A] shadow-[0_0_15px_rgba(206,255,26,0.15)]">
+          <span class="h-1.5 w-1.5 rounded-full bg-[#CEFF1A] animate-pulse"></span>
+          TRUST & SECURITY
+        </div>
+      </div>
+
+      <!-- Heading -->
+      <div class="reveal delay-100 mx-auto mt-6 max-w-3xl text-center">
+        <h2 class="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl leading-[1.1]">
+          <span>Your money moves.</span> <br />
+          <span class="text-gradient-lavender-lime drop-shadow-[0_0_35px_rgba(206,255,26,0.35)]">
+            Your control stays.
+          </span>
+        </h2>
+        <p class="mt-4 text-base font-normal leading-relaxed text-zinc-400 sm:text-lg">
+          NUPAY is designed around clear controls, transparent payment activity and security throughout the transaction
+          experience.
+        </p>
+      </div>
+
+      <!-- Strata Centerpiece from Figma Clean without container -->
+      <div
+        class="reveal-scale delay-150 relative mt-12 mx-auto w-full max-w-5xl flex flex-col items-center justify-center">
+        <div class="relative w-full flex items-center justify-center">
+          <img src="./figma/14_chatgpt_image_sep_20__2026__10_03_43_pm_1.png"
+            alt="3D Security Strata Architecture Visual from Figma"
+            class="w-full h-auto object-contain select-none drop-shadow-[0_25px_60px_rgba(0,0,0,0.95)]" />
+        </div>
+        <div
+          class="mt-6 flex flex-wrap items-center justify-around gap-4 border-t border-white/[0.08] pt-4 text-xs font-mono text-zinc-400 w-full">
+          <div class="flex items-center gap-2">
+            <span class="h-2 w-2 rounded-full bg-[#CEFF1A] animate-ping"></span>
+            <span class="text-white font-semibold">100% MPC PROVABLE</span>
+          </div>
+          <div>ISOLATION: ZERO-KNOWLEDGE</div>
+          <div class="text-[#CEFF1A]">LATENCY: &lt; 1ms HEURISTIC</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 09 — SECTION#FAQ (FREQUENTLY ASKED QUESTIONS) -->
+  <!-- ========================================================================= -->
+  <section id="faq"
+    class="relative w-full bg-[#050607] py-24 sm:py-32 font-sans overflow-hidden">
+    <div class="relative z-10 mx-auto max-w-7xl xl:max-w-[1400px] px-6 sm:px-10 lg:px-12">
+      <!-- Tag -->
+      <div class="reveal max-w-3xl">
+        <div
+          class="inline-flex items-center gap-2 rounded-full border border-[#CEFF1A]/40 bg-[#CEFF1A]/10 px-3.5 py-1 text-xs font-mono font-semibold uppercase tracking-wider text-[#CEFF1A]">
+          09 FREQUENTLY ASKED QUESTIONS
+        </div>
+        <h2
+          class="mt-6 font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.08]">
+          <span>Everything you need to know </span> <br />
+          <span class="text-gradient-lavender-lime drop-shadow-[0_0_35px_rgba(206,255,26,0.35)]">
+            about NUPAY.
+          </span>
+        </h2>
+        <p class="mt-4 max-w-xl text-sm sm:text-base font-normal leading-relaxed text-zinc-400">
+          From eligible assets and spending rules to payment routing and settlement, here’s how NUPAY works.
+        </p>
+      </div>
+
+      <!-- FAQ Grid -->
+      <div class="mt-14 grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
+        <!-- Accordion with Smooth Grid Animation -->
+        <div class="reveal delay-100 space-y-3.5 lg:col-span-7">
+
+          <div
+            class="faq-item group cursor-pointer rounded-2xl p-5 sm:p-6 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] border border-white/[0.08] bg-[#0A0C0E]/60 hover:border-white/20">
+            <button onclick="toggleFaq(this)"
+              class="flex w-full items-center justify-between gap-4 text-left select-none">
+              <span class="text-sm sm:text-base font-semibold text-white tracking-tight">What exactly is NEXA?</span>
+              <span
+                class="faq-icon flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/20 text-zinc-400 font-mono text-sm transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">+</span>
+            </button>
+            <div
+              class="faq-collapse grid grid-rows-[0fr] opacity-0 transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+              <div class="overflow-hidden">
+                <div
+                  class="mt-3.5 pt-3.5 border-t border-white/[0.06] text-xs sm:text-sm leading-relaxed text-zinc-400">
+                  NEXA is an autonomous financial intelligence layer that connects all your asset holdings (Bitcoin,
+                  Ethereum, USDC, and traditional currencies) to global payment rails. It functions as a single unified
+                  interface that automatically routes and liquidates value at the moment of payment without requiring
+                  manual pre-swaps or centralized custodian locks.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="faq-item group cursor-pointer rounded-2xl p-5 sm:p-6 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] border border-white/[0.08] bg-[#0A0C0E]/60 hover:border-white/20">
+            <button onclick="toggleFaq(this)"
+              class="flex w-full items-center justify-between gap-4 text-left select-none">
+              <span class="text-sm sm:text-base font-semibold text-white tracking-tight">Can I spend crypto
+                anywhere?</span>
+              <span
+                class="faq-icon flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/20 text-zinc-400 font-mono text-sm transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">+</span>
+            </button>
+            <div
+              class="faq-collapse grid grid-rows-[0fr] opacity-0 transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+              <div class="overflow-hidden">
+                <div
+                  class="mt-3.5 pt-3.5 border-t border-white/[0.06] text-xs sm:text-sm leading-relaxed text-zinc-400">
+                  Yes. Because NEXA interfaces directly with global card interchange standards (Visa and Mastercard
+                  networks), your physical titanium NEXA card or Apple/Google Pay digital card works at over 100 million
+                  merchants and ATMs across 180+ countries.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Open by default as in Figma -->
+          <div
+            class="faq-item group cursor-pointer rounded-2xl p-5 sm:p-6 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] border border-[#CEFF1A]/50 bg-[#0B1309]/85 shadow-[0_0_35px_rgba(206,255,26,0.12)]">
+            <button onclick="toggleFaq(this)"
+              class="flex w-full items-center justify-between gap-4 text-left select-none">
+              <span class="text-sm sm:text-base font-semibold text-white tracking-tight">How does NEXA choose an
+                eligible asset?</span>
+              <span
+                class="faq-icon flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#CEFF1A] bg-[#CEFF1A]/10 text-[#CEFF1A] font-mono text-sm rotate-180 shadow-[0_0_12px_rgba(206,255,26,0.3)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">−</span>
+            </button>
+            <div
+              class="faq-collapse grid grid-rows-[1fr] opacity-100 transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+              <div class="overflow-hidden">
+                <div
+                  class="mt-3.5 pt-3.5 border-t border-white/[0.06] text-xs sm:text-sm leading-relaxed text-zinc-400">
+                  NEXA's AI engine queries dozens of automated liquidity pools, assessing gas fees, exchange spread, and
+                  your custom priority rules. If you configure NEXA to protect BTC and spend stablecoins first, it
+                  strictly executes against USDC until the pool threshold is met, ensuring optimal tax treatment and
+                  zero slippage.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="faq-item group cursor-pointer rounded-2xl p-5 sm:p-6 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] border border-white/[0.08] bg-[#0A0C0E]/60 hover:border-white/20">
+            <button onclick="toggleFaq(this)"
+              class="flex w-full items-center justify-between gap-4 text-left select-none">
+              <span class="text-sm sm:text-base font-semibold text-white tracking-tight">Can I control which assets can
+                be used?</span>
+              <span
+                class="faq-icon flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/20 text-zinc-400 font-mono text-sm transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">+</span>
+            </button>
+            <div
+              class="faq-collapse grid grid-rows-[0fr] opacity-0 transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+              <div class="overflow-hidden">
+                <div
+                  class="mt-3.5 pt-3.5 border-t border-white/[0.06] text-xs sm:text-sm leading-relaxed text-zinc-400">
+                  Absolutely. You have total sovereign control over your priority ladder. Set custom hard rules such as
+                  'Never spend Bitcoin under $100k', 'Always spend staking rewards first', or 'Only liquidate USDC when
+                  traveling abroad'.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="faq-item group cursor-pointer rounded-2xl p-5 sm:p-6 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] border border-white/[0.08] bg-[#0A0C0E]/60 hover:border-white/20">
+            <button onclick="toggleFaq(this)"
+              class="flex w-full items-center justify-between gap-4 text-left select-none">
+              <span class="text-sm sm:text-base font-semibold text-white tracking-tight">Does the merchant receive
+                crypto?</span>
+              <span
+                class="faq-icon flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/20 text-zinc-400 font-mono text-sm transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">+</span>
+            </button>
+            <div
+              class="faq-collapse grid grid-rows-[0fr] opacity-0 transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+              <div class="overflow-hidden">
+                <div
+                  class="mt-3.5 pt-3.5 border-t border-white/[0.06] text-xs sm:text-sm leading-relaxed text-zinc-400">
+                  No. Merchants receive standard local fiat currency (such as USD, EUR, INR, or JPY) cleared directly
+                  into their ordinary merchant bank account within milliseconds. Merchants experience zero volatility
+                  risk, zero crypto accounting friction, and zero hardware upgrades.
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Orb Graphic from Figma Clean without container -->
+        <div class="reveal-scale delay-250 flex flex-col items-center justify-center lg:col-span-5 lg:pl-4">
+          <div class="relative w-full flex items-center justify-center">
+            <img src="./figma/15_chatgpt_image_sep_20__2026__04_17_28_pm_1.png" alt="Nupay FAQ 3D Orb Graphic"
+              class="w-full max-w-[480px] h-auto object-contain select-none drop-shadow-[0_25px_60px_rgba(0,0,0,0.95)]" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 10 — SECTION#WAITLIST (FINAL CTA & BRAND FOOTER — FIGMA NODE 5:2342 & 5:2343) -->
+  <!-- ========================================================================= -->
+  <!-- ========================================================================= -->
+  <!-- 10 — SECTION#WAITLIST / GLOBAL CTA (Figma Node 5:2261 — pure SVG vector globe) -->
+  <!-- ========================================================================= -->
+  <section id="waitlist" class="relative w-full overflow-hidden bg-[#020303] font-sans">
+    <div class="relative mx-auto w-full max-w-[1304px] px-4 sm:px-6 lg:px-0 pt-16 pb-24">
+
+      <!-- Main Visual Container (Earth Night Horizon) - 1304x868, rounded-[24px], bg-[#050607] -->
+      <div
+        class="reveal-scale relative w-full min-h-[640px] sm:min-h-[720px] lg:h-[868px] rounded-[24px] overflow-hidden bg-[#050607] shadow-2xl">
+
+        <!-- Background Graphic from Figma: ChatGPT Image Sep 20, 2026 (node 5:2565) -->
+        <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none">
+          <img src="figma/16_chatgpt_image_sep_20__2026__04_34_52_pm_2.png" alt="Global Satellite Network"
+            class="absolute inset-0 w-full h-full object-cover object-center select-none opacity-95" />
+          <!-- High-tech HUD Overlay Linear Gradient (Figma node 5:2343: stop 0: 0.85, stop 0.5: 0.40, stop 1: 0.60) -->
+          <div class="absolute inset-0 bg-gradient-to-r from-[#050607]/90 via-[#050607]/50 to-[#050607]/30"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-[#050607]/90 via-transparent to-[#050607]/40"></div>
+        </div>
+
+        <!-- High-tech HUD Overlay Content Layer (Figma node 5:2343 pad=56px) -->
+        <div class="relative z-10 w-full h-full p-6 sm:p-10 lg:p-[56px] flex flex-col justify-between">
+
+          <!-- Top HUD Badges (Figma node 5:2344) -->
+          <div class="flex flex-wrap items-center justify-between gap-4 w-full">
+            <!-- Left: Satellite telemetry badge -->
+            <div
+              class="inline-flex items-center gap-2 rounded-full border border-[#CEFF1A]/40 bg-black/60 px-3 py-1 text-[11px] font-mono font-semibold text-[#CEFF1A] backdrop-blur-md shadow-[0_0_14px_rgba(206,255,26,0.22)]">
+              <span class="h-2 w-2 rounded-full bg-[#CEFF1A] animate-pulse"></span>
+              <span class="tracking-wide leading-[17px]">SATELLITE TELEMETRY // GLOBAL LATITUDES ACTIVE</span>
+            </div>
+            <!-- Right: Coordinates -->
+            <div class="hidden sm:flex items-center gap-4 text-[12px] font-mono">
+              <span class="text-zinc-400">LAT: 40.7128° N</span>
+              <span class="text-zinc-400">LON: 74.0060° W</span>
+              <span class="text-[#CEFF1A] font-semibold">CORRIDOR: 100% CLEAR</span>
+            </div>
+          </div>
+
+          <!-- Center Content: Headline + Subtitle + CTAs (Figma node 5:2357 / 5:2359 - top-aligned with mt-8 mb-auto) -->
+          <div class="reveal delay-100 max-w-[672px] mt-6 sm:mt-9 mb-auto">
+            <!-- Headline (Space Grotesk, 60px, ls=-1.5px, lh=60px) -->
+            <h2
+              class="font-display text-4xl sm:text-5xl lg:text-[60px] font-bold tracking-[-1.5px] leading-[1.0] lg:leading-[60px]">
+              <span class="block text-white">Your assets.</span>
+              <span
+                class="block bg-gradient-to-r from-[#E9D5FF] via-[#C084FC] to-[#CEFF1A] bg-clip-text text-transparent drop-shadow-[0_0_35px_rgba(206,255,26,0.50)] -mt-1 sm:-mt-2">
+                Ready for the real world.
+              </span>
+            </h2>
+
+            <!-- Subtitle (Plus Jakarta Sans 16px/24px, mt-2, max-w=555) -->
+            <p class="mt-2 max-w-[555px] text-[16px] font-normal leading-[24px] text-zinc-300">
+              One account for your assets. One intelligence layer for the way you spend.
+            </p>
+
+            <!-- Action buttons (mt-6, gap=16) -->
+            <div class="mt-6 flex flex-wrap items-center gap-4">
+              <!-- Primary: lime pill -->
+              <button onclick="openWaitlist()"
+                class="inline-flex items-center justify-center gap-2 h-[52px] px-8 rounded-full bg-gradient-to-r from-[#EAFF4F] via-[#CEFF1A] to-[#A7E600] text-black text-[14px] font-bold shadow-[0_0_30px_rgba(206,255,26,0.40)] transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(206,255,26,0.6)] active:scale-95 cursor-pointer">
+                <span>Get started with Nupay</span>
+                <span class="text-[15px]">→</span>
+              </button>
+              <!-- Secondary: ghost pill -->
+              <a href="#product"
+                class="inline-flex items-center justify-center h-[52px] px-7 rounded-full border border-white/20 bg-black/60 text-[14px] font-medium text-white hover:border-white/40 hover:bg-black/80 transition-all backdrop-blur-md cursor-pointer">
+                Explore Architecture
+              </a>
+            </div>
+          </div>
+
+          <!-- Bottom telemetry bar (Figma node 5:2375 — border-t, pt-4, justify-between) -->
+          <div
+            class="flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-4 text-[12px] font-mono text-zinc-400 w-full tracking-wider">
+            <div class="flex items-center gap-3">
+              <span class="h-2 w-2 rounded-full bg-[#CEFF1A] shadow-[0_0_8px_#CEFF1A]"></span>
+              <span>ASSETS • INTELLIGENCE • PAYMENTS</span>
+            </div>
+            <div class="hidden sm:block">ONE ACCOUNT • GLOBAL PAYMENTS</div>
+          </div>
+        </div>
+        <!-- ── end HUD CONTENT LAYER ── -->
+
+      </div>
+    </div>
+
+    <!-- BRAND FOOTER -->
+    <footer class="w-full bg-[#030405] pt-16 pb-12 font-sans">
+      <div class="mx-auto max-w-7xl xl:max-w-[1400px] px-6 sm:px-10 lg:px-12">
+        <div class="grid grid-cols-1 gap-10 md:grid-cols-12 lg:gap-14">
+          <div class="md:col-span-5 space-y-4">
+            <div class="flex items-center gap-2.5">
+              <span class="font-display text-2xl font-bold tracking-tight text-white">Nupay</span>
+              <span class="rounded bg-white/10 px-2 py-0.5 text-[10px] font-mono text-zinc-300">v2.4</span>
+            </div>
+
+            <p class="max-w-sm text-sm leading-relaxed text-zinc-500">
+              The autonomous financial intelligence layer. Connecting non-custodial cryptographic vaults to worldwide
+              point-of-sale card interchange in 40ms.
+            </p>
+
+            <div class="flex items-center gap-2 text-xs font-mono text-[#CEFF1A]">
+              <span class="h-2 w-2 rounded-full bg-[#CEFF1A] animate-pulse"></span>
+              <span>ALL PROTOCOLS OPERATIONAL</span>
+            </div>
+          </div>
+
+          <div class="md:col-span-2 space-y-3">
+            <h4 class="text-xs font-mono font-bold uppercase tracking-wider text-white">Protocol</h4>
+            <ul class="space-y-2 text-sm text-zinc-400">
+              <li><a href="#intelligence" class="hover:text-white transition-colors">Smart Liquidity</a></li>
+              <li><a href="#product" class="hover:text-white transition-colors">Atomic Bridge</a></li>
+              <li><a href="#features" class="hover:text-white transition-colors">Dynamic Vaults</a></li>
+              <li><a href="#features" class="hover:text-white transition-colors">Zero Slippage</a></li>
+            </ul>
+          </div>
+
+          <div class="md:col-span-2 space-y-3">
+            <h4 class="text-xs font-mono font-bold uppercase tracking-wider text-white">Resources</h4>
+            <ul class="space-y-2 text-sm text-zinc-400">
+              <li><a href="#how-it-works" class="hover:text-white transition-colors">Documentation</a></li>
+              <li><a href="#product" class="hover:text-white transition-colors">API Reference</a></li>
+              <li><a href="#security" class="hover:text-white transition-colors">Audit Reports</a></li>
+              <li><a href="#waitlist" class="hover:text-white transition-colors">Network Status</a></li>
+            </ul>
+          </div>
+
+          <div class="md:col-span-3 space-y-3">
+            <h4 class="text-xs font-mono font-bold uppercase tracking-wider text-white">Legal & Trust</h4>
+            <ul class="space-y-2 text-sm text-zinc-400">
+              <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+              <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+              <li><a href="#" class="hover:text-white transition-colors">Global Compliance</a></li>
+              <li><a href="#" class="hover:text-white transition-colors">Security Bug Bounty</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div
+          class="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/[0.08] pt-8 sm:flex-row text-xs font-mono text-zinc-500">
+          <div>
+            © 2026 Nupay Labs Inc. All rights reserved. Sovereign Financial Technology.
+          </div>
+
+          <div class="flex items-center gap-6">
+            <a href="https://twitter.com" target="_blank" rel="noreferrer"
+              class="hover:text-[#CEFF1A] transition-colors">Twitter / X</a>
+            <a href="https://github.com" target="_blank" rel="noreferrer"
+              class="hover:text-white transition-colors">GitHub</a>
+            <a href="https://discord.com" target="_blank" rel="noreferrer"
+              class="hover:text-[#8247FF] transition-colors">Discord</a>
+            <a href="https://telegram.org" target="_blank" rel="noreferrer"
+              class="hover:text-[#2DD4BF] transition-colors">Telegram</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- WAITLIST / ACCESS MODAL -->
+  <!-- ========================================================================= -->
+  <div id="waitlist-modal"
+    class="fixed inset-0 z-50 hidden items-center justify-center p-4 backdrop-blur-xl bg-black/80 transition-opacity">
+    <div
+      class="relative w-full max-w-md overflow-hidden rounded-3xl border border-white/15 bg-[#090C0F] p-8 shadow-2xl">
+      <div class="pointer-events-none absolute -top-12 -right-12 h-40 w-40 rounded-full bg-[#CEFF1A]/15 blur-3xl"></div>
+
+      <div class="flex items-center justify-between border-b border-white/[0.08] pb-4">
+        <div class="flex items-center gap-2">
+          <span class="h-2 w-2 rounded-full bg-[#CEFF1A] animate-ping"></span>
+          <span class="text-xs font-mono font-bold text-white uppercase tracking-wider">COHORT 01 ACCESS</span>
+        </div>
+        <button onclick="closeWaitlist()" class="rounded-lg p-1 text-zinc-400 hover:text-white">
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="mt-6 text-center">
+        <h3 class="font-display text-2xl font-bold text-white">Join the Nupay Network</h3>
+        <p class="mt-2 text-xs sm:text-sm text-zinc-400 leading-relaxed">
+          Be among the first 10,000 members to access sovereign multi-asset liquidity and the Nupay Titanium Card.
+        </p>
+      </div>
+
+      <form onsubmit="handleWaitlistSubmit(event)" class="mt-6 space-y-4">
+        <div>
+          <label class="block text-xs font-mono text-zinc-400 mb-1.5">EMAIL ADDRESS</label>
+          <input type="email" required placeholder="you@company.com"
+            class="w-full rounded-xl border border-white/15 bg-black/60 px-4 py-3 text-sm text-white placeholder-zinc-500 focus:border-[#CEFF1A] focus:outline-none" />
+        </div>
+
+        <button type="submit" class="btn-pill-lime w-full rounded-xl py-3.5 text-sm font-bold text-black shadow-lg">
+          Request Early Access
+        </button>
+
+        <p class="text-center text-[11px] font-mono text-zinc-500">
+          Zero annual fees · Encrypted with 256-bit AES
+        </p>
+      </form>
+
+      <div id="waitlist-success"
+        class="hidden mt-6 rounded-xl border border-[#CEFF1A]/30 bg-[#CEFF1A]/10 p-4 text-center">
+        <div class="text-sm font-bold text-[#CEFF1A]">You're on the priority list!</div>
+        <div class="text-xs text-zinc-400 mt-1">Check your inbox for confirmation and cohort updates.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Back to Top Button -->
+  <button id="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Back to top"
+    class="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-[#090D11]/90 text-[#CEFF1A] shadow-[0_4px_25px_rgba(0,0,0,0.8),0_0_20px_rgba(206,255,26,0.3)] backdrop-blur-md transition-all hover:scale-110 hover:border-[#CEFF1A]/60 hover:shadow-[0_0_30px_rgba(206,255,26,0.5)] cursor-pointer">
+    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+      stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
+
+  <!-- Interactive JavaScript -->
+  <script>
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    }
+
+    function openWaitlist() {
+      document.getElementById('waitlist-modal').classList.remove('hidden');
+      document.getElementById('waitlist-modal').classList.add('flex');
+    }
+
+    function closeWaitlist() {
+      document.getElementById('waitlist-modal').classList.add('hidden');
+      document.getElementById('waitlist-modal').classList.remove('flex');
+    }
+
+    function handleWaitlistSubmit(e) {
+      e.preventDefault();
+      document.getElementById('waitlist-success').classList.remove('hidden');
+      setTimeout(() => {
+        closeWaitlist();
+        document.getElementById('waitlist-success').classList.add('hidden');
+      }, 2500);
+    }
+
+    function toggleFaq(button) {
+      const item = button.closest('.faq-item');
+      const collapse = item.querySelector('.faq-collapse');
+      const icon = item.querySelector('.faq-icon');
+      const isAlreadyOpen = collapse.classList.contains('grid-rows-[1fr]');
+
+      document.querySelectorAll('.faq-item').forEach(el => {
+        el.classList.remove('border-[#CEFF1A]/50', 'bg-[#0B1309]/85', 'shadow-[0_0_35px_rgba(206,255,26,0.12)]');
+        el.classList.add('border-white/[0.08]', 'bg-[#0A0C0E]/60');
+        const c = el.querySelector('.faq-collapse');
+        c.classList.remove('grid-rows-[1fr]', 'opacity-100');
+        c.classList.add('grid-rows-[0fr]', 'opacity-0');
+        const ic = el.querySelector('.faq-icon');
+        ic.textContent = '+';
+        ic.classList.remove('border-[#CEFF1A]', 'bg-[#CEFF1A]/10', 'text-[#CEFF1A]', 'rotate-180', 'shadow-[0_0_12px_rgba(206,255,26,0.3)]');
+        ic.classList.add('border-white/20', 'text-zinc-400', 'rotate-0');
+      });
+
+      if (!isAlreadyOpen) {
+        collapse.classList.remove('grid-rows-[0fr]', 'opacity-0');
+        collapse.classList.add('grid-rows-[1fr]', 'opacity-100');
+        item.classList.add('border-[#CEFF1A]/50', 'bg-[#0B1309]/85', 'shadow-[0_0_35px_rgba(206,255,26,0.12)]');
+        item.classList.remove('border-white/[0.08]', 'bg-[#0A0C0E]/60');
+        icon.textContent = '−';
+        icon.classList.add('border-[#CEFF1A]', 'bg-[#CEFF1A]/10', 'text-[#CEFF1A]', 'rotate-180', 'shadow-[0_0_12px_rgba(206,255,26,0.3)]');
+        icon.classList.remove('border-white/20', 'text-zinc-400', 'rotate-0');
+      }
+    }
+
+    // ── SCROLL PROGRESS, HEADER ELEVATION, SCROLLSPY & BACK TO TOP ──
+    const progressBar = document.getElementById('scroll-progress');
+    const header = document.querySelector('header');
+    const backToTopBtn = document.getElementById('back-to-top');
+    const navItems = document.querySelectorAll('#desktop-nav .nav-item');
+    const spySections = ['faq', 'security', 'analytics', 'how-it-works', 'intelligence', 'product'];
+
+    function updateScrollState() {
+      const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+
+      // 1. Progress Bar
+      if (progressBar) {
+        progressBar.style.width = scrolled + '%';
+      }
+
+      // 2. Header Dynamic Style
+      if (header) {
+        if (winScroll > 40) {
+          header.classList.add('bg-[#050607]/95', 'shadow-[0_4px_30px_rgba(0,0,0,0.85)]', 'border-white/10');
+          header.classList.remove('bg-[#050607]/85', 'border-white/[0.06]');
+        } else {
+          header.classList.remove('bg-[#050607]/95', 'shadow-[0_4px_30px_rgba(0,0,0,0.85)]', 'border-white/10');
+          header.classList.add('bg-[#050607]/85', 'border-white/[0.06]');
+        }
+      }
+
+      // 3. Back to Top Button
+      if (backToTopBtn) {
+        if (winScroll > 450) {
+          backToTopBtn.classList.add('is-visible');
+        } else {
+          backToTopBtn.classList.remove('is-visible');
+        }
+      }
+
+      // 4. ScrollSpy Navigation Highlighting (bottom to top)
+      const scrollPosition = winScroll + 250;
+      let activeId = 'home';
+
+      for (let i = 0; i < spySections.length; i++) {
+        const sec = document.getElementById(spySections[i]);
+        if (sec && scrollPosition >= sec.offsetTop) {
+          activeId = spySections[i];
+          break;
+        }
+      }
+
+      navItems.forEach(item => {
+        const target = item.getAttribute('data-section');
+        const dot = item.querySelector('.nav-dot');
+        if (target === activeId) {
+          item.classList.add('text-[#CEFF1A]', 'drop-shadow-[0_0_12px_rgba(206,255,26,0.65)]', 'font-semibold');
+          item.classList.remove('text-zinc-400');
+          if (dot) {
+            dot.classList.remove('opacity-0', 'scale-0');
+            dot.classList.add('opacity-100', 'scale-100');
+          }
+        } else {
+          item.classList.remove('text-[#CEFF1A]', 'drop-shadow-[0_0_12px_rgba(206,255,26,0.65)]', 'font-semibold');
+          item.classList.add('text-zinc-400');
+          if (dot) {
+            dot.classList.remove('opacity-100', 'scale-100');
+            dot.classList.add('opacity-0', 'scale-0');
+          }
+        }
+      });
+    }
+
+    window.addEventListener('scroll', updateScrollState, { passive: true });
+    updateScrollState();
+
+    // ── SCROLL REVEAL OBSERVER ──
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -40px 0px',
+      threshold: 0.08
+    };
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal, .reveal-scale').forEach(el => {
+      revealObserver.observe(el);
+    });
+
+    // ── ANALYTICS GRAPHS: SCROLL-TRIGGERED RISING & COUNTER ANIMATIONS ──
+    function initAnalyticsGraphAnimations() {
+      const analyticsSection = document.getElementById('analytics');
+      if (!analyticsSection) return;
+
+      const valCurveGroup = document.getElementById('val-curve-group');
+      const curvePath = document.getElementById('valuation-curve-path');
+      const dotGroup = document.getElementById('val-dot-group');
+      const dotBadgeText = document.getElementById('dot-badge-text');
+      const valCounter = document.getElementById('valuation-counter');
+      const pctCounter = document.getElementById('percent-counter');
+      const diffCounter = document.getElementById('diff-counter');
+      const pillarWrappers = document.querySelectorAll('.pillar-bar-wrapper');
+      const pillarPcts = document.querySelectorAll('.pillar-pct');
+      const pillarAmounts = document.querySelectorAll('.pillar-amount');
+
+      if (!curvePath) return;
+
+      // Compute peak distance on curve (where x reaches OCT at approx x = 320)
+      const totalLen = curvePath.getTotalLength();
+      let peakLen = totalLen * 0.52;
+      for (let l = 0; l <= totalLen; l += 1) {
+        const pt = curvePath.getPointAtLength(l);
+        if (pt.x >= 320) {
+          peakLen = l;
+          break;
+        }
+      }
+
+      // Initial state: Dot at start on far left (x=30, y=175)
+      const startPt = curvePath.getPointAtLength(0);
+      if (dotGroup) {
+        dotGroup.setAttribute('transform', 'translate(' + startPt.x + ', ' + startPt.y + ')');
+      }
+
+      let animationFrameId = null;
+      let isCurrentlyVisible = false;
+
+      function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+      }
+
+      function startAnimations() {
+        if (isCurrentlyVisible) return;
+        isCurrentlyVisible = true;
+
+        // 1. Rise Left Graph curve from ground (scaleY 0 -> 1)
+        if (valCurveGroup) {
+          valCurveGroup.style.transform = 'scaleY(1)';
+        }
+
+        // 2. Rise Right Graph pillars from bottom up with staggered timing
+        pillarWrappers.forEach((w) => {
+          w.style.transform = 'scaleY(1)';
+        });
+
+        // 3. Smooth frame-by-frame animation for dot traveling along curve + live counter effects
+        const startTime = performance.now();
+        const duration = 2600; // 2.6s slower, graceful, cinematic motion
+
+        function renderFrame(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = easeOutCubic(progress);
+
+          // A) Move dot along curve from left to OCT peak
+          const currentDist = eased * peakLen;
+          const pt = curvePath.getPointAtLength(currentDist);
+          if (dotGroup) {
+            dotGroup.setAttribute('transform', 'translate(' + pt.x + ', ' + pt.y + ')');
+          }
+
+          // B) Tooltip counter effect as dot travels ($0K -> $284.9K)
+          if (dotBadgeText) {
+            const currentK = (eased * 284.9).toFixed(1);
+            dotBadgeText.textContent = '$' + currentK + 'K';
+          }
+
+          // C) Main headline counter effect ($0 -> $284,920)
+          if (valCounter) {
+            const currentVal = Math.round(eased * 284920);
+            valCounter.textContent = '$' + currentVal.toLocaleString('en-US');
+          }
+
+          // D) Sub-counters (+24.8% and +$56,410)
+          if (pctCounter) {
+            pctCounter.textContent = '+' + (eased * 24.8).toFixed(1) + '%';
+          }
+          if (diffCounter) {
+            const currentDiff = Math.round(eased * 56410);
+            diffCounter.textContent = '(+$' + currentDiff.toLocaleString('en-US') + ')';
+          }
+
+          // E) Right Graph: Pillar percentages (48%, 27%, 15%, 10%)
+          pillarPcts.forEach((el) => {
+            const target = parseFloat(el.getAttribute('data-target') || '0');
+            el.textContent = Math.round(eased * target) + '%';
+          });
+
+          // F) Right Graph: Pillar dollar amounts
+          pillarAmounts.forEach((el) => {
+            const target = parseFloat(el.getAttribute('data-target') || '0');
+            const currentAmount = (eased * target).toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            });
+            el.textContent = '$' + currentAmount;
+          });
+
+          if (progress < 1) {
+            animationFrameId = requestAnimationFrame(renderFrame);
+          }
+        }
+
+        if (animationFrameId) cancelAnimationFrame(animationFrameId);
+        animationFrameId = requestAnimationFrame(renderFrame);
+      }
+
+      function resetAnimations() {
+        if (!isCurrentlyVisible) return;
+        isCurrentlyVisible = false;
+
+        if (animationFrameId) cancelAnimationFrame(animationFrameId);
+
+        // Reset Left Graph to ground
+        if (valCurveGroup) {
+          valCurveGroup.style.transform = 'scaleY(0)';
+        }
+
+        // Reset Right Graph pillars to ground
+        pillarWrappers.forEach((w) => {
+          w.style.transform = 'scaleY(0)';
+        });
+
+        // Reset dot to starting position on left
+        if (dotGroup) {
+          dotGroup.setAttribute('transform', 'translate(' + startPt.x + ', ' + startPt.y + ')');
+        }
+
+        // Reset counters to zero
+        if (dotBadgeText) dotBadgeText.textContent = '$0K';
+        if (valCounter) valCounter.textContent = '$0';
+        if (pctCounter) pctCounter.textContent = '+0.0%';
+        if (diffCounter) diffCounter.textContent = '(+$0)';
+        pillarPcts.forEach((el) => { el.textContent = '0%'; });
+        pillarAmounts.forEach((el) => { el.textContent = '$0.00'; });
+      }
+
+      // Intersection Observer with threshold to trigger "whenever this section come in"
+      const graphObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            startAnimations();
+          } else {
+            resetAnimations();
+          }
+        });
+      }, {
+        threshold: 0.2,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      graphObserver.observe(analyticsSection);
+    }
+
+    // Time filter button interactive switcher
+    window.switchTimeFilter = function(btn, range) {
+      document.querySelectorAll('.time-filter-btn').forEach(b => {
+        b.classList.remove('bg-[#CEFF1A]', 'text-black', 'shadow-[0_0_16px_rgba(206,255,26,0.55)]', 'font-bold');
+        b.classList.add('text-zinc-400', 'font-semibold');
+      });
+      btn.classList.remove('text-zinc-400', 'font-semibold');
+      btn.classList.add('bg-[#CEFF1A]', 'text-black', 'shadow-[0_0_16px_rgba(206,255,26,0.55)]', 'font-bold');
+    };
+
+    // Initialize analytics graph animations
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initAnalyticsGraphAnimations);
+    } else {
+      initAnalyticsGraphAnimations();
+    }
+  </script>
+</body>
+
+</html>
