@@ -1065,16 +1065,16 @@
               <!-- TRAVELING GLOWING DOT & TOOLTIP BADGE -->
               <g id="val-dot-group" transform="translate(30, 175)" style="opacity: 0; transition: opacity 0.35s ease-out;">
                 <!-- Glowing Outer Dot -->
-                <circle cx="0" cy="0" r="4.5" fill="#CEFF1A" filter="drop-shadow(0 0 3px rgba(206,255,26,0.6))" />
+                <circle cx="0" cy="0" r="5.5" fill="#CEFF1A" filter="drop-shadow(0 0 4px rgba(206,255,26,0.7))" />
                 <!-- Crisp White Center -->
-                <circle cx="0" cy="0" r="2.2" fill="#FFFFFF" />
+                <circle cx="0" cy="0" r="2.8" fill="#FFFFFF" />
                 <!-- Tooltip Stem Line -->
-                <line x1="0" y1="-5" x2="0" y2="-14" stroke="#CEFF1A" stroke-width="1.2" opacity="0.8" />
+                <line x1="0" y1="-6" x2="0" y2="-16" stroke="#CEFF1A" stroke-width="1.5" opacity="0.85" />
                 
                 <!-- Tooltip Badge ($284.9K) -->
-                <g transform="translate(0, -24)">
-                  <rect x="-34" y="-12" width="68" height="23" rx="11.5" fill="#0A0E08" stroke="#CEFF1A" stroke-width="1.2" filter="drop-shadow(0 2px 6px rgba(0,0,0,0.6))" />
-                  <text id="dot-badge-text" x="0" y="3.5" text-anchor="middle" font-family="'Space Grotesk', 'Plus Jakarta Sans', monospace" font-size="11" font-weight="700" fill="#FFFFFF">$0K</text>
+                <g transform="translate(0, -32)">
+                  <rect x="-44" y="-14" width="88" height="28" rx="14" fill="#0A0E08" stroke="#CEFF1A" stroke-width="1.5" filter="drop-shadow(0 2px 8px rgba(0,0,0,0.75))" />
+                  <text id="dot-badge-text" x="0" y="4.5" text-anchor="middle" font-family="'Space Grotesk', 'Plus Jakarta Sans', monospace" font-size="14.5" font-weight="700" fill="#FFFFFF">$0K</text>
                 </g>
               </g>
 
@@ -1136,14 +1136,11 @@
               </div>
               <!-- Reflection of BTC Pillar (Figma node 5:2034) -->
               <div class="pillar-reflection w-full flex flex-col items-center pointer-events-none select-none -mt-0.5" style="transform-origin: top; transform: scaleY(0); transition: transform 2.2s cubic-bezier(0.16, 1, 0.3, 1);">
+                <img src="./pillar_refl_btc.png" alt="" class="w-full max-w-[62px] sm:max-w-[72px] h-auto object-contain select-none opacity-85" />
                 <!-- Surface Contact Spotlight Glow -->
-                <div class="w-3/4 h-1.5 rounded-full bg-[#CEFF1A]/50 blur-[3px]"></div>
-                <!-- Mirrored Inverted Pillar Reflection -->
-                <div class="overflow-hidden h-7 sm:h-9 w-full flex justify-center -mt-0.5" style="mask-image: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%); -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);">
-                  <img src="./clean_pillar_btc.png" alt="" class="w-full max-w-[62px] sm:max-w-[72px] h-auto object-contain transform scale-y-[-1] opacity-40 blur-[0.6px]" />
-                </div>
+                <div class="w-3/4 h-2 -mt-5 sm:-mt-6 rounded-full bg-[#CEFF1A]/50 blur-[5px]"></div>
               </div>
-              <div class="mt-2 text-center relative z-10">
+              <div class="mt-1 text-center relative z-10">
                 <div class="text-xs sm:text-sm font-bold text-white tracking-tight">BTC</div>
                 <div class="pillar-amount text-[10px] sm:text-[11px] font-mono text-zinc-400" data-target="136761.50">$0</div>
               </div>
@@ -1157,14 +1154,11 @@
               </div>
               <!-- Reflection of USDC Pillar (Figma node 5:2034) -->
               <div class="pillar-reflection w-full flex flex-col items-center pointer-events-none select-none -mt-0.5" style="transform-origin: top; transform: scaleY(0); transition: transform 2.2s cubic-bezier(0.16, 1, 0.3, 1) 180ms;">
+                <img src="./pillar_refl_usdc.png" alt="" class="w-full max-w-[62px] sm:max-w-[72px] h-auto object-contain select-none opacity-85" />
                 <!-- Surface Contact Spotlight Glow -->
-                <div class="w-3/4 h-1.5 rounded-full bg-[#EAFF4F]/50 blur-[3px]"></div>
-                <!-- Mirrored Inverted Pillar Reflection -->
-                <div class="overflow-hidden h-7 sm:h-9 w-full flex justify-center -mt-0.5" style="mask-image: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%); -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);">
-                  <img src="./clean_pillar_usdc.png" alt="" class="w-full max-w-[62px] sm:max-w-[72px] h-auto object-contain transform scale-y-[-1] opacity-40 blur-[0.6px]" />
-                </div>
+                <div class="w-3/4 h-2 -mt-5 sm:-mt-6 rounded-full bg-[#EAFF4F]/50 blur-[5px]"></div>
               </div>
-              <div class="mt-2 text-center relative z-10">
+              <div class="mt-1 text-center relative z-10">
                 <div class="text-xs sm:text-sm font-bold text-white tracking-tight">USDC</div>
                 <div class="pillar-amount text-[10px] sm:text-[11px] font-mono text-zinc-400" data-target="76928.40">$0</div>
               </div>
@@ -1178,14 +1172,11 @@
               </div>
               <!-- Reflection of ETH Pillar (Figma node 5:2034) -->
               <div class="pillar-reflection w-full flex flex-col items-center pointer-events-none select-none -mt-0.5" style="transform-origin: top; transform: scaleY(0); transition: transform 2.2s cubic-bezier(0.16, 1, 0.3, 1) 360ms;">
+                <img src="./pillar_refl_eth.png" alt="" class="w-full max-w-[62px] sm:max-w-[72px] h-auto object-contain select-none opacity-85" />
                 <!-- Surface Contact Spotlight Glow -->
-                <div class="w-3/4 h-1.5 rounded-full bg-[#A855F7]/55 blur-[3px]"></div>
-                <!-- Mirrored Inverted Pillar Reflection -->
-                <div class="overflow-hidden h-7 sm:h-9 w-full flex justify-center -mt-0.5" style="mask-image: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%); -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);">
-                  <img src="./clean_pillar_eth.png" alt="" class="w-full max-w-[62px] sm:max-w-[72px] h-auto object-contain transform scale-y-[-1] opacity-40 blur-[0.6px]" />
-                </div>
+                <div class="w-3/4 h-2 -mt-5 sm:-mt-6 rounded-full bg-[#A855F7]/55 blur-[5px]"></div>
               </div>
-              <div class="mt-2 text-center relative z-10">
+              <div class="mt-1 text-center relative z-10">
                 <div class="text-xs sm:text-sm font-bold text-white tracking-tight">ETH</div>
                 <div class="pillar-amount text-[10px] sm:text-[11px] font-mono text-zinc-400" data-target="42738.00">$0</div>
               </div>
@@ -1199,14 +1190,11 @@
               </div>
               <!-- Reflection of FIAT Pillar (Figma node 5:2034) -->
               <div class="pillar-reflection w-full flex flex-col items-center pointer-events-none select-none -mt-0.5" style="transform-origin: top; transform: scaleY(0); transition: transform 2.2s cubic-bezier(0.16, 1, 0.3, 1) 540ms;">
+                <img src="./pillar_refl_fiat.png" alt="" class="w-full max-w-[62px] sm:max-w-[72px] h-auto object-contain select-none opacity-85" />
                 <!-- Surface Contact Spotlight Glow -->
-                <div class="w-3/4 h-1.5 rounded-full bg-[#2DD4BF]/55 blur-[3px]"></div>
-                <!-- Mirrored Inverted Pillar Reflection -->
-                <div class="overflow-hidden h-7 sm:h-9 w-full flex justify-center -mt-0.5" style="mask-image: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%); -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);">
-                  <img src="./clean_pillar_fiat.png" alt="" class="w-full max-w-[62px] sm:max-w-[72px] h-auto object-contain transform scale-y-[-1] opacity-40 blur-[0.6px]" />
-                </div>
+                <div class="w-3/4 h-2 -mt-5 sm:-mt-6 rounded-full bg-[#2DD4BF]/55 blur-[5px]"></div>
               </div>
-              <div class="mt-2 text-center relative z-10">
+              <div class="mt-1 text-center relative z-10">
                 <div class="text-xs sm:text-sm font-bold text-white tracking-tight">FIAT</div>
                 <div class="pillar-amount text-[10px] sm:text-[11px] font-mono text-zinc-400" data-target="28492.00">$0</div>
               </div>
