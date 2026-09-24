@@ -1,0 +1,65 @@
+<svg width="150" height="135" viewBox="0 0 150 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Left Wing Gradient: Radiant Neon Chartreuse / Lime -->
+    <linearGradient id="nupay-left-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EAFF4F" />
+      <stop offset="35%" stop-color="#CEFF1A" />
+      <stop offset="70%" stop-color="#A7E600" />
+      <stop offset="100%" stop-color="#7DAE00" />
+    </linearGradient>
+
+    <!-- Right Wing Gradient -->
+    <linearGradient id="nupay-right-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D6FF33" />
+      <stop offset="40%" stop-color="#CEFF1A" />
+      <stop offset="100%" stop-color="#7DAE00" />
+    </linearGradient>
+
+    <!-- Diagonal Smoked Glass Gradient -->
+    <linearGradient id="nupay-glass-grad" x1="15%" y1="15%" x2="85%" y2="85%">
+      <stop offset="0%" stop-color="#141E06" stop-opacity="0.95" />
+      <stop offset="50%" stop-color="#050802" stop-opacity="0.98" />
+      <stop offset="85%" stop-color="#182708" stop-opacity="0.95" />
+      <stop offset="100%" stop-color="#2D460C" stop-opacity="0.95" />
+    </linearGradient>
+
+    <!-- Diagonal Glowing Rim -->
+    <linearGradient id="nupay-rim-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#CEFF1A" stop-opacity="0.4" />
+      <stop offset="50%" stop-color="#CEFF1A" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#EAFF4F" stop-opacity="1" />
+    </linearGradient>
+
+    <radialGradient id="star-burst" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#EAFF4F" stop-opacity="1" />
+      <stop offset="40%" stop-color="#CEFF1A" stop-opacity="0.7" />
+      <stop offset="100%" stop-color="#CEFF1A" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Ambient Underglow -->
+  <circle cx="75" cy="68" r="45" fill="#CEFF1A" opacity="0.18" filter="blur(16px)" />
+
+  <!-- 1. Left Wing / Loop -->
+  <path d="M 40 10 C 22 10 10 22 10 40 L 10 75 C 10 93 22 105 40 105 C 50 105 58 98 64 90 L 40 10 Z" fill="url(#nupay-left-grad)" />
+
+  <!-- 2. Right Wing / Loop -->
+  <path d="M 88 52 C 88 38 100 28 114 28 C 128 28 140 38 140 52 L 140 95 C 140 108 128 120 114 120 C 100 120 88 108 88 95 Z" fill="url(#nupay-right-grad)" />
+
+  <!-- 3. Crossing Diagonal Capsule (Angle ~42deg, Center at 76, 68) -->
+  <g transform="rotate(42 76 68)">
+    <rect x="24" y="44" width="104" height="48" rx="24" fill="url(#nupay-glass-grad)" stroke="url(#nupay-rim-grad)" stroke-width="2" />
+  </g>
+
+  <!-- 4. Front Fold Crease on Left Wing (Gives 3D depth) -->
+  <path d="M 10 40 C 10 22 22 10 40 10 C 58 10 68 22 68 40 L 52 56 L 24 32 C 16 34 10 37 10 40 Z" fill="url(#nupay-left-grad)" opacity="0.85" />
+
+  <!-- 5. Central 4-Pointed Star Sparkle (Center: 76, 68) -->
+  <!-- Ambient halo -->
+  <circle cx="76" cy="68" r="16" fill="url(#star-burst)" />
+
+  <!-- Diamond 4-Pointed Star -->
+  <path d="M 76 53 Q 76 68 91 68 Q 76 68 76 83 Q 76 68 61 68 Q 76 68 76 53 Z" fill="#EAFF4F" />
+  <!-- Inner White Core -->
+  <path d="M 76 58 Q 76 68 86 68 Q 76 68 76 78 Q 76 68 66 68 Q 76 68 76 58 Z" fill="#FFFFFF" opacity="0.95" />
+</svg>

@@ -1,0 +1,247 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1100" width="100%" height="100%" fill="none">
+  <defs>
+    <!-- Background Ambient Glow -->
+    <radialGradient id="ss-bg-lime" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#CEFF1A" stop-opacity="0.10"/>
+      <stop offset="60%" stop-color="#8247FF" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Glass Card Gradient -->
+    <linearGradient id="ss-card-bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#12161A" stop-opacity="0.94"/>
+      <stop offset="100%" stop-color="#07090C" stop-opacity="0.98"/>
+    </linearGradient>
+
+    <!-- Neon Green Glow Filter -->
+    <filter id="ss-glow-lime" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="5" result="blur1"/>
+      <feGaussianBlur stdDeviation="14" result="blur2"/>
+      <feMerge>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="ss-glow-subtle" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Purple Glow Filter -->
+    <filter id="ss-glow-purple" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Drop Shadow for Cards -->
+    <filter id="ss-shadow-card" x="-15%" y="-15%" width="130%" height="135%">
+      <feDropShadow dx="0" dy="14" stdDeviation="20" flood-color="#000000" flood-opacity="0.9"/>
+    </filter>
+  </defs>
+
+  <style>
+    .ss-text-sans { font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; }
+    .ss-text-display { font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif; }
+    .ss-text-mono { font-family: 'JetBrains Mono', monospace, monospace; }
+  </style>
+
+  <!-- Ambient Glow -->
+  <rect x="50" y="50" width="900" height="1000" fill="url(#ss-bg-lime)" pointer-events="none" />
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- 01. CONNECTOR LINES & ORBITS (BACKGROUND)                    -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+
+  <!-- Large Dashed Orbital Rings around Strata -->
+  <ellipse cx="500" cy="400" rx="380" ry="170" stroke="#CEFF1A" stroke-width="1.2" stroke-opacity="0.25" stroke-dasharray="4,8" fill="none"/>
+  <ellipse cx="500" cy="400" rx="330" ry="145" stroke="#C084FC" stroke-width="1" stroke-opacity="0.2" stroke-dasharray="3,7" fill="none"/>
+
+  <!-- Vertical Central Laser Core Axis -->
+  <line x1="500" y1="165" x2="500" y2="615" stroke="#CEFF1A" stroke-width="2.5" filter="url(#ss-glow-subtle)"/>
+  <polygon points="500,625 494,612 506,612" fill="#CEFF1A" filter="url(#ss-glow-subtle)"/>
+
+  <!-- Top Card Connector Line -->
+  <line x1="500" y1="140" x2="500" y2="225" stroke="#CEFF1A" stroke-width="2" filter="url(#ss-glow-subtle)"/>
+  <circle cx="500" cy="170" r="4.5" fill="#CEFF1A" filter="url(#ss-glow-subtle)"/>
+  <circle cx="500" cy="170" r="2" fill="#FFFFFF"/>
+
+  <!-- Left Card Connector Line -->
+  <path d="M 288 395 L 340 395" stroke="#CEFF1A" stroke-width="2" filter="url(#ss-glow-subtle)"/>
+  <circle cx="288" cy="395" r="4.5" fill="#CEFF1A" filter="url(#ss-glow-subtle)"/>
+  <circle cx="288" cy="395" r="2" fill="#FFFFFF"/>
+
+  <!-- Right Card Connector Line -->
+  <path d="M 728 472 L 675 472" stroke="#C084FC" stroke-width="2" filter="url(#ss-glow-purple)"/>
+  <circle cx="728" cy="472" r="4.5" fill="#C084FC" filter="url(#ss-glow-purple)"/>
+  <circle cx="728" cy="472" r="2" fill="#FFFFFF"/>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- 02. CENTRAL 3D STRATA COMPOSITION                           -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- Embedded High-Resolution Base Composition for 100% Visual Parity -->
+  <g>
+    <image
+      href="./14_chatgpt_image_sep_20__2026__10_03_43_pm_1.png"
+      x="0"
+      y="0"
+      width="1000"
+      height="1100"
+      preserveAspectRatio="xMidYMid meet"
+    />
+  </g>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- 03. TOP LAYER 01 CARD: OPTICAL GLASS                        -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <g filter="url(#ss-shadow-card)">
+    <!-- Halo -->
+    <rect x="340" y="55" width="320" height="100" rx="18" fill="#CEFF1A" opacity="0.10" filter="url(#ss-glow-lime)"/>
+    <!-- Card Box -->
+    <rect x="340" y="55" width="320" height="100" rx="18" fill="url(#ss-card-bg)" stroke="#CEFF1A" stroke-opacity="0.4" stroke-width="1.4"/>
+    <rect x="341" y="56" width="318" height="98" rx="17" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+    <!-- Stacked Layers Icon -->
+    <g transform="translate(366, 80)">
+      <path d="M 0 12 L 18 3 L 36 12 L 18 21 Z" fill="none" stroke="#CEFF1A" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M 6 19 L 18 25 L 30 19" fill="none" stroke="#CEFF1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M 6 26 L 18 32 L 30 26" fill="none" stroke="#CEFF1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+
+    <!-- Content -->
+    <text x="420" y="86" class="af-text-mono" font-size="12" font-weight="400" fill="#9CA3AF">Layer 01</text>
+    <text x="420" y="108" class="af-text-display" font-size="18" font-weight="700" fill="#FFFFFF">Optical Glass</text>
+    <text x="420" y="130" class="af-text-sans" font-size="12.5" font-weight="400" fill="#9CA3AF">Visibility without exposure</text>
+  </g>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- 04. LEFT LAYER 02 CARD: TITANIUM LATTICE                    -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <g filter="url(#ss-shadow-card)">
+    <!-- Halo -->
+    <rect x="28" y="320" width="260" height="95" rx="16" fill="#CEFF1A" opacity="0.08" filter="url(#ss-glow-lime)"/>
+    <!-- Card Box -->
+    <rect x="28" y="320" width="260" height="95" rx="16" fill="url(#ss-card-bg)" stroke="#CEFF1A" stroke-opacity="0.38" stroke-width="1.3"/>
+    <rect x="29" y="321" width="258" height="93" rx="15" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+    <!-- 3D Cube Wireframe Icon -->
+    <g transform="translate(52, 345)">
+      <!-- Isometric Cube -->
+      <polygon points="18,0 36,10 18,20 0,10" fill="none" stroke="#FFFFFF" stroke-width="1.8"/>
+      <polygon points="0,10 18,20 18,40 0,30" fill="none" stroke="#CEFF1A" stroke-width="1.8"/>
+      <polygon points="18,20 36,10 36,30 18,40" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-opacity="0.7"/>
+    </g>
+
+    <!-- Content -->
+    <text x="104" y="348" class="af-text-mono" font-size="11.5" font-weight="400" fill="#9CA3AF">Layer 02</text>
+    <text x="104" y="370" class="af-text-display" font-size="17" font-weight="700" fill="#FFFFFF">Titanium Lattice</text>
+    <text x="104" y="392" class="af-text-sans" font-size="12" font-weight="400" fill="#9CA3AF">Isolated computation</text>
+  </g>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- 05. RIGHT LAYER 03 CARD: POLARIZED GLASS                    -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <g filter="url(#ss-shadow-card)">
+    <!-- Halo -->
+    <rect x="728" y="395" width="248" height="95" rx="16" fill="#8247FF" opacity="0.10" filter="url(#ss-glow-purple)"/>
+    <!-- Card Box -->
+    <rect x="728" y="395" width="248" height="95" rx="16" fill="url(#ss-card-bg)" stroke="#8247FF" stroke-opacity="0.4" stroke-width="1.3"/>
+    <rect x="729" y="396" width="246" height="93" rx="15" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+    <!-- Aperture / Dot Array Icon -->
+    <g transform="translate(752, 423)">
+      <circle cx="18" cy="18" r="4" fill="#C084FC" filter="url(#ss-glow-purple)"/>
+      <circle cx="18" cy="4" r="2" fill="#C084FC"/>
+      <circle cx="18" cy="32" r="2" fill="#C084FC"/>
+      <circle cx="4" cy="18" r="2" fill="#C084FC"/>
+      <circle cx="32" cy="18" r="2" fill="#C084FC"/>
+      <circle cx="8" cy="8" r="1.5" fill="#C084FC"/>
+      <circle cx="28" cy="8" r="1.5" fill="#C084FC"/>
+      <circle cx="8" cy="28" r="1.5" fill="#C084FC"/>
+      <circle cx="28" cy="28" r="1.5" fill="#C084FC"/>
+    </g>
+
+    <!-- Content -->
+    <text x="802" y="423" class="af-text-mono" font-size="11.5" font-weight="400" fill="#9CA3AF">Layer 03</text>
+    <text x="802" y="445" class="af-text-display" font-size="17" font-weight="700" fill="#FFFFFF">Polarized Glass</text>
+    <text x="802" y="467" class="af-text-sans" font-size="12" font-weight="400" fill="#9CA3AF">Adaptive threat filtering</text>
+  </g>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- 06. LOWER ORB VERIFICATION HUB                              -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- Radiating Ring Accents -->
+  <ellipse cx="500" cy="735" rx="140" ry="24" stroke="#CEFF1A" stroke-width="1.2" stroke-opacity="0.35" fill="none"/>
+  <ellipse cx="500" cy="745" rx="180" ry="30" stroke="#CEFF1A" stroke-width="0.8" stroke-opacity="0.2" fill="none"/>
+
+  <!-- Output Conduits from Orb to Bottom Cards -->
+  <path d="M 430 740 C 360 760, 220 780, 220 835" fill="none" stroke="#CEFF1A" stroke-width="2" filter="url(#ss-glow-subtle)"/>
+  <path d="M 500 740 L 500 835" fill="none" stroke="#CEFF1A" stroke-width="2" filter="url(#ss-glow-subtle)"/>
+  <path d="M 570 740 C 640 760, 780 780, 780 835" fill="none" stroke="#CEFF1A" stroke-width="2" filter="url(#ss-glow-subtle)"/>
+
+  <!-- Conduit Terminal Dots -->
+  <circle cx="220" cy="835" r="4" fill="#CEFF1A" filter="url(#ss-glow-subtle)"/>
+  <circle cx="500" cy="835" r="4" fill="#CEFF1A" filter="url(#ss-glow-subtle)"/>
+  <circle cx="780" cy="835" r="4" fill="#CEFF1A" filter="url(#ss-glow-subtle)"/>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- 07. BOTTOM ROW: 3 OUTPUT PROTOCOL CARDS                     -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+
+  <!-- ── CARD 1: ASSET ── -->
+  <g filter="url(#ss-shadow-card)">
+    <rect x="80" y="835" width="250" height="92" rx="18" fill="#CEFF1A" opacity="0.08" filter="url(#ss-glow-lime)"/>
+    <rect x="80" y="835" width="250" height="92" rx="18" fill="url(#ss-card-bg)" stroke="#CEFF1A" stroke-opacity="0.4" stroke-width="1.3"/>
+    <rect x="81" y="836" width="248" height="90" rx="17" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+    <!-- Stacked Layers Icon -->
+    <g transform="translate(108, 862)">
+      <path d="M 0 10 L 16 2 L 32 10 L 16 18 Z" fill="none" stroke="#CEFF1A" stroke-width="2"/>
+      <path d="M 5 16 L 16 22 L 27 16" fill="none" stroke="#CEFF1A" stroke-width="2"/>
+      <path d="M 5 23 L 16 29 L 27 23" fill="none" stroke="#CEFF1A" stroke-width="2"/>
+    </g>
+
+    <text x="156" y="874" class="af-text-display" font-size="16" font-weight="700" fill="#FFFFFF" letter-spacing="0.8">ASSET</text>
+    <text x="156" y="897" class="af-text-sans" font-size="12.5" font-weight="400" fill="#9CA3AF">Multi-Sig Isolation</text>
+  </g>
+
+  <!-- ── CARD 2: RULES ── -->
+  <g filter="url(#ss-shadow-card)">
+    <rect x="375" y="835" width="250" height="92" rx="18" fill="#CEFF1A" opacity="0.08" filter="url(#ss-glow-lime)"/>
+    <rect x="375" y="835" width="250" height="92" rx="18" fill="url(#ss-card-bg)" stroke="#CEFF1A" stroke-opacity="0.4" stroke-width="1.3"/>
+    <rect x="376" y="836" width="248" height="90" rx="17" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+    <!-- Smart Contract Document Icon -->
+    <g transform="translate(405, 862)">
+      <rect x="0" y="0" width="24" height="32" rx="4" fill="none" stroke="#CEFF1A" stroke-width="2"/>
+      <line x1="6" y1="8" x2="18" y2="8" stroke="#CEFF1A" stroke-width="2"/>
+      <line x1="6" y1="14" x2="18" y2="14" stroke="#CEFF1A" stroke-width="2"/>
+      <line x1="6" y1="20" x2="14" y2="20" stroke="#CEFF1A" stroke-width="2"/>
+    </g>
+
+    <text x="448" y="874" class="af-text-display" font-size="16" font-weight="700" fill="#FFFFFF" letter-spacing="0.8">RULES</text>
+    <text x="448" y="897" class="af-text-sans" font-size="12.5" font-weight="400" fill="#9CA3AF">Smart Contract Logic</text>
+  </g>
+
+  <!-- ── CARD 3: SETTLEMENT ── -->
+  <g filter="url(#ss-shadow-card)">
+    <rect x="670" y="835" width="250" height="92" rx="18" fill="#CEFF1A" opacity="0.08" filter="url(#ss-glow-lime)"/>
+    <rect x="670" y="835" width="250" height="92" rx="18" fill="url(#ss-card-bg)" stroke="#CEFF1A" stroke-opacity="0.4" stroke-width="1.3"/>
+    <rect x="671" y="836" width="248" height="90" rx="17" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+    <!-- Lightning Bolt Icon -->
+    <g transform="translate(702, 862)">
+      <polygon points="14,0 2,16 12,16 8,32 24,14 14,14" fill="none" stroke="#CEFF1A" stroke-width="2" stroke-linejoin="round"/>
+    </g>
+
+    <text x="746" y="874" class="af-text-display" font-size="16" font-weight="700" fill="#FFFFFF" letter-spacing="0.8">SETTLEMENT</text>
+    <text x="746" y="897" class="af-text-sans" font-size="12.5" font-weight="400" fill="#9CA3AF">Instant Fiat Clearance</text>
+  </g>
+</svg>

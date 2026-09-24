@@ -1,0 +1,8 @@
+node_modules/
+.next/
+.vscode/
+*.ps1
+scratch_*.*
+*.tsbuildinfo
+.env
+.env*.local
