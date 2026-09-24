@@ -1880,16 +1880,6 @@
       graphObserver.observe(targetElement);
     }
 
-    // Time filter button interactive switcher
-    window.switchTimeFilter = function(btn, range) {
-      document.querySelectorAll('.time-filter-btn').forEach(b => {
-        b.classList.remove('bg-[#CEFF1A]', 'text-black', 'shadow-[0_0_16px_rgba(206,255,26,0.55)]', 'font-bold');
-        b.classList.add('text-zinc-400', 'font-semibold');
-      });
-      btn.classList.remove('text-zinc-400', 'font-semibold');
-      btn.classList.add('bg-[#CEFF1A]', 'text-black', 'shadow-[0_0_16px_rgba(206,255,26,0.55)]', 'font-bold');
-    };
-
     // Initialize analytics graph animations
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', initAnalyticsGraphAnimations);
