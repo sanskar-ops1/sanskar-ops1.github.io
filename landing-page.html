@@ -1004,7 +1004,7 @@
               </g>
 
               <!-- TRAVELING GLOWING DOT & TOOLTIP BADGE -->
-              <g id="val-dot-group" transform="translate(30, 175)">
+              <g id="val-dot-group" transform="translate(30, 175)" style="opacity: 0; transition: opacity 0.35s ease-out;">
                 <!-- Pulsing Outer Ring -->
                 <circle cx="0" cy="0" r="10" fill="none" stroke="#CEFF1A" stroke-width="1.5" class="animate-ping opacity-60" />
                 <!-- Glowing Outer Dot -->
@@ -1736,22 +1736,23 @@
         }
       }
 
-      // Initial state: Dot at start on far left (x=30, y=175)
+      // Initial state: Dot at start on far left (x=30, y=175), hidden until delay
       const startPt = curvePath.getPointAtLength(0);
       if (dotGroup) {
+        dotGroup.style.opacity = '0';
         dotGroup.setAttribute('transform', 'translate(' + startPt.x + ', ' + startPt.y + ')');
       }
 
       let animationFrameId = null;
-      let isCurrentlyVisible = false;
+      let hasAnimated = false;
 
       function easeOutCubic(t) {
         return 1 - Math.pow(1 - t, 3);
       }
 
       function startAnimations() {
-        if (isCurrentlyVisible) return;
-        isCurrentlyVisible = true;
+        if (hasAnimated) return;
+        hasAnimated = true;
 
         // 1. Rise Left Graph curve from ground (scaleY 0 -> 1)
         if (valCurveGroup) {
@@ -1763,35 +1764,58 @@
           w.style.transform = 'scaleY(1)';
         });
 
-        // 3. Smooth frame-by-frame animation for dot traveling along curve + live counter effects
+        // 3. Smooth frame-by-frame animation:
+        // - Graph curves & pillars rise up
+        // - Dot has a deliberate delay so the curve and card establish themselves first before the dot glides along the curve
         const startTime = performance.now();
-        const duration = 2600; // 2.6s slower, graceful, cinematic motion
+        const duration = 2800; // Total duration
+        const dotDelay = 650;  // Delayed dot appearance & motion so curve rises first
+        const dotDuration = 2000; // 2.0s smooth travel along the curve to the peak
 
         function renderFrame(now) {
           const elapsed = now - startTime;
-          const progress = Math.min(elapsed / duration, 1);
+          const progress = Math.min(elapsed / 2400, 1);
           const eased = easeOutCubic(progress);
 
-          // A) Move dot along curve from left to OCT peak
-          const currentDist = eased * peakLen;
-          const pt = curvePath.getPointAtLength(currentDist);
-          if (dotGroup) {
-            dotGroup.setAttribute('transform', 'translate(' + pt.x + ', ' + pt.y + ')');
+          // A) Delayed Traveling Glowing Dot & Tooltip Badge
+          if (elapsed < dotDelay) {
+            // Keep dot hidden during initial curve rise
+            if (dotGroup) {
+              dotGroup.style.opacity = '0';
+              dotGroup.setAttribute('transform', 'translate(' + startPt.x + ', ' + startPt.y + ')');
+            }
+            if (dotBadgeText) {
+              dotBadgeText.textContent = '$0K';
+            }
+          } else {
+            // Dot starts gracefully after curve is formed
+            const dotElapsed = elapsed - dotDelay;
+            const dotProgress = Math.min(dotElapsed / dotDuration, 1);
+            const dotEased = easeOutCubic(dotProgress);
+
+            if (dotGroup) {
+              // Fade in over first 200ms of dot movement
+              const fadeIn = Math.min(dotElapsed / 200, 1);
+              dotGroup.style.opacity = fadeIn.toString();
+
+              const currentDist = dotEased * peakLen;
+              const pt = curvePath.getPointAtLength(currentDist);
+              dotGroup.setAttribute('transform', 'translate(' + pt.x + ', ' + pt.y + ')');
+            }
+
+            if (dotBadgeText) {
+              const currentK = (dotEased * 284.9).toFixed(1);
+              dotBadgeText.textContent = '$' + currentK + 'K';
+            }
           }
 
-          // B) Tooltip counter effect as dot travels ($0K -> $284.9K)
-          if (dotBadgeText) {
-            const currentK = (eased * 284.9).toFixed(1);
-            dotBadgeText.textContent = '$' + currentK + 'K';
-          }
-
-          // C) Main headline counter effect ($0 -> $284,920)
+          // B) Main headline counter effect ($0 -> $284,920)
           if (valCounter) {
             const currentVal = Math.round(eased * 284920);
             valCounter.textContent = '$' + currentVal.toLocaleString('en-US');
           }
 
-          // D) Sub-counters (+24.8% and +$56,410)
+          // C) Sub-counters (+24.8% and +$56,410)
           if (pctCounter) {
             pctCounter.textContent = '+' + (eased * 24.8).toFixed(1) + '%';
           }
@@ -1800,13 +1824,13 @@
             diffCounter.textContent = '(+$' + currentDiff.toLocaleString('en-US') + ')';
           }
 
-          // E) Right Graph: Pillar percentages (48%, 27%, 15%, 10%)
+          // D) Right Graph: Pillar percentages (48%, 27%, 15%, 10%)
           pillarPcts.forEach((el) => {
             const target = parseFloat(el.getAttribute('data-target') || '0');
             el.textContent = Math.round(eased * target) + '%';
           });
 
-          // F) Right Graph: Pillar dollar amounts
+          // E) Right Graph: Pillar dollar amounts
           pillarAmounts.forEach((el) => {
             const target = parseFloat(el.getAttribute('data-target') || '0');
             const currentAmount = (eased * target).toLocaleString('en-US', {
@@ -1816,8 +1840,30 @@
             el.textContent = '$' + currentAmount;
           });
 
-          if (progress < 1) {
+          if (elapsed < (dotDelay + dotDuration)) {
             animationFrameId = requestAnimationFrame(renderFrame);
+          } else {
+            // Final guaranteed state
+            if (dotGroup) {
+              dotGroup.style.opacity = '1';
+              const peakPt = curvePath.getPointAtLength(peakLen);
+              dotGroup.setAttribute('transform', 'translate(' + peakPt.x + ', ' + peakPt.y + ')');
+            }
+            if (dotBadgeText) dotBadgeText.textContent = '$284.9K';
+            if (valCounter) valCounter.textContent = '$284,920';
+            if (pctCounter) pctCounter.textContent = '+24.8%';
+            if (diffCounter) diffCounter.textContent = '(+$56,410)';
+            pillarPcts.forEach((el) => {
+              const target = parseFloat(el.getAttribute('data-target') || '0');
+              el.textContent = target + '%';
+            });
+            pillarAmounts.forEach((el) => {
+              const target = parseFloat(el.getAttribute('data-target') || '0');
+              el.textContent = '$' + target.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+              });
+            });
           }
         }
 
@@ -1825,43 +1871,13 @@
         animationFrameId = requestAnimationFrame(renderFrame);
       }
 
-      function resetAnimations() {
-        if (!isCurrentlyVisible) return;
-        isCurrentlyVisible = false;
-
-        if (animationFrameId) cancelAnimationFrame(animationFrameId);
-
-        // Reset Left Graph to ground
-        if (valCurveGroup) {
-          valCurveGroup.style.transform = 'scaleY(0)';
-        }
-
-        // Reset Right Graph pillars to ground
-        pillarWrappers.forEach((w) => {
-          w.style.transform = 'scaleY(0)';
-        });
-
-        // Reset dot to starting position on left
-        if (dotGroup) {
-          dotGroup.setAttribute('transform', 'translate(' + startPt.x + ', ' + startPt.y + ')');
-        }
-
-        // Reset counters to zero
-        if (dotBadgeText) dotBadgeText.textContent = '$0K';
-        if (valCounter) valCounter.textContent = '$0';
-        if (pctCounter) pctCounter.textContent = '+0.0%';
-        if (diffCounter) diffCounter.textContent = '(+$0)';
-        pillarPcts.forEach((el) => { el.textContent = '0%'; });
-        pillarAmounts.forEach((el) => { el.textContent = '$0.00'; });
-      }
-
-      // Intersection Observer with threshold to trigger "whenever this section come in"
-      const graphObserver = new IntersectionObserver((entries) => {
+      // Intersection Observer: Trigger animation ONCE when the user sees the section for the first time
+      const targetElement = document.getElementById('analytics-cards') || analyticsSection;
+      const graphObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting && !hasAnimated) {
             startAnimations();
-          } else {
-            resetAnimations();
+            observer.unobserve(entry.target);
           }
         });
       }, {
@@ -1869,7 +1885,7 @@
         rootMargin: '0px 0px -40px 0px'
       });
 
-      graphObserver.observe(analyticsSection);
+      graphObserver.observe(targetElement);
     }
 
     // Time filter button interactive switcher
