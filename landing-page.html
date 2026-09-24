@@ -229,77 +229,66 @@
     }
 
     /* ── GLOBAL EARTH NETWORK LINE ANIMATIONS ── */
-    @keyframes earthDashForward {
-      from {
-        stroke-dashoffset: 800;
-      }
-      to {
-        stroke-dashoffset: 0;
-      }
-    }
-
-    @keyframes earthDashReverse {
-      from {
-        stroke-dashoffset: 0;
-      }
-      to {
-        stroke-dashoffset: 800;
-      }
-    }
-
-    @keyframes earthBeamGlow {
-      0%, 100% {
-        opacity: 0.55;
-        filter: drop-shadow(0 0 4px rgba(206, 255, 26, 0.4));
-      }
-      50% {
-        opacity: 0.95;
-        filter: drop-shadow(0 0 12px rgba(206, 255, 26, 0.85));
-      }
-    }
-
-    @keyframes earthNodePing {
+    @keyframes earthLineFlow {
       0% {
-        transform: scale(0.6);
-        opacity: 0.95;
-      }
-      60% {
-        opacity: 0.4;
+        stroke-dashoffset: 100;
       }
       100% {
-        transform: scale(2.6);
-        opacity: 0;
+        stroke-dashoffset: -100;
       }
     }
 
-    .earth-stream-fast {
-      stroke-dasharray: 45 280;
-      animation: earthDashForward 3.2s linear infinite;
+    @keyframes earthLineFlowRev {
+      0% {
+        stroke-dashoffset: -100;
+      }
+      100% {
+        stroke-dashoffset: 100;
+      }
     }
 
-    .earth-stream-medium {
-      stroke-dasharray: 60 360;
-      animation: earthDashForward 4.5s linear infinite;
+    /* Moving Glowing Yellow Line Beams (Travels A -> B then reverses B -> A seamlessly) */
+    .earth-line-surge-1 {
+      stroke-dasharray: 100 100;
+      stroke-dashoffset: 100;
+      animation: earthLineFlow 3.8s ease-in-out infinite alternate;
     }
 
-    .earth-stream-slow {
-      stroke-dasharray: 55 420;
-      animation: earthDashForward 5.8s linear infinite;
+    .earth-line-surge-2 {
+      stroke-dasharray: 100 100;
+      stroke-dashoffset: 100;
+      animation: earthLineFlow 3.0s ease-in-out infinite alternate;
     }
 
-    .earth-stream-rev {
-      stroke-dasharray: 50 320;
-      animation: earthDashReverse 4s linear infinite;
+    .earth-line-surge-3 {
+      stroke-dasharray: 100 100;
+      stroke-dashoffset: 100;
+      animation: earthLineFlow 4.2s ease-in-out infinite alternate;
     }
 
-    .earth-beam-pulse {
-      animation: earthBeamGlow 3.5s ease-in-out infinite;
+    .earth-line-surge-4 {
+      stroke-dasharray: 100 100;
+      stroke-dashoffset: 100;
+      animation: earthLineFlow 2.6s ease-in-out infinite alternate;
     }
 
-    .earth-ping-ring {
-      transform-box: fill-box;
-      transform-origin: center;
-      animation: earthNodePing 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+    .earth-line-surge-5 {
+      stroke-dasharray: 100 100;
+      stroke-dashoffset: 100;
+      animation: earthLineFlow 3.4s ease-in-out infinite alternate;
+    }
+
+    .earth-line-base {
+      stroke: #CEFF1A;
+      opacity: 0.14;
+      stroke-width: 1.2;
+    }
+
+    .earth-line-active {
+      stroke: #CEFF1A;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      filter: drop-shadow(0 0 6px rgba(206, 255, 26, 0.9)) drop-shadow(0 0 16px rgba(206, 255, 26, 0.5));
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -1424,249 +1413,61 @@
           <div class="absolute inset-0 bg-gradient-to-r from-[#050607]/90 via-[#050607]/50 to-[#050607]/20 pointer-events-none z-[1]"></div>
           <div class="absolute inset-0 bg-gradient-to-t from-[#050607]/90 via-transparent to-[#050607]/30 pointer-events-none z-[1]"></div>
 
-          <!-- Animated Global Satellite Network Vector Arcs & Pulses -->
+          <!-- Animated Global Satellite Network Vector Arcs -->
           <svg class="absolute inset-0 w-full h-full pointer-events-none select-none z-[2]"
                viewBox="0 0 1536 1024" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
             <defs>
-              <!-- Neon Arc Soft Glow Filter -->
-              <filter id="earthArcGlow" x="-25%" y="-25%" width="150%" height="150%">
+              <!-- Neon Yellow Glow Filter -->
+              <filter id="earthArcGlow" x="-30%" y="-30%" width="160%" height="160%">
                 <feGaussianBlur stdDeviation="3.5" result="blur" />
                 <feMerge>
                   <feMergeNode in="blur" />
                   <feMergeNode in="SourceGraphic" />
                 </feMerge>
               </filter>
-
-              <!-- Intense Photon Pulse Glow Filter -->
-              <filter id="earthPulseGlow" x="-60%" y="-60%" width="220%" height="220%">
-                <feGaussianBlur stdDeviation="4" result="blur1" />
-                <feGaussianBlur stdDeviation="1.5" result="blur2" />
-                <feMerge>
-                  <feMergeNode in="blur1" />
-                  <feMergeNode in="blur2" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-
-              <!-- Node Hub Glow Filter -->
-              <filter id="earthNodeGlow" x="-80%" y="-80%" width="260%" height="260%">
-                <feGaussianBlur stdDeviation="5" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-
-              <!-- Linear Gradients for Arcs -->
-              <linearGradient id="arcGradEuropeAsia" x1="0%" y1="100%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#CEFF1A" stop-opacity="0.9" />
-                <stop offset="50%" stop-color="#EAFF4F" stop-opacity="1" />
-                <stop offset="100%" stop-color="#CEFF1A" stop-opacity="0.9" />
-              </linearGradient>
-
-              <linearGradient id="arcGradPacific" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#EAFF4F" stop-opacity="0.95" />
-                <stop offset="60%" stop-color="#CEFF1A" stop-opacity="1" />
-                <stop offset="100%" stop-color="#A7E600" stop-opacity="0.85" />
-              </linearGradient>
-
-              <linearGradient id="arcGradSpace" x1="0%" y1="100%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#CEFF1A" stop-opacity="0.9" />
-                <stop offset="70%" stop-color="#EAFF4F" stop-opacity="0.75" />
-                <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.5" />
-              </linearGradient>
-
-              <!-- Reusable Geometric Paths for Motion & Strokes -->
-              <path id="path-eur-asia" d="M 920,420 C 1000,295 1160,310 1280,545" />
-              <path id="path-asia-aus" d="M 1280,545 C 1345,595 1378,660 1368,744" />
-              <path id="path-eur-aus" d="M 920,420 C 1040,510 1220,470 1368,744" />
-              <path id="path-use-eur" d="M 520,450 C 620,380 770,375 870,395" />
-              <path id="path-usw-use" d="M 365,435 Q 440,415 520,450" />
-              <path id="path-sa-eur" d="M 535,635 C 660,500 810,480 920,420" />
-              <path id="path-eur-sat" d="M 920,420 C 1080,240 1220,180 1319,134" />
-              <path id="path-asia-sat" d="M 1280,545 C 1390,410 1380,230 1319,134" />
-              <path id="path-sat-orbit" d="M 1319,134 C 1380,95 1460,110 1530,135" />
             </defs>
 
-            <!-- ── 1. BASE NEON GLOW ARCS (Subtle Ambient Glow Breathing) ── -->
-            <g class="earth-beam-pulse" fill="none">
-              <use href="#path-eur-asia" stroke="url(#arcGradEuropeAsia)" stroke-width="1.6" opacity="0.8" filter="url(#earthArcGlow)" />
-              <use href="#path-asia-aus" stroke="url(#arcGradPacific)" stroke-width="1.6" opacity="0.8" filter="url(#earthArcGlow)" />
-              <use href="#path-eur-aus" stroke="#CEFF1A" stroke-width="1.4" opacity="0.7" filter="url(#earthArcGlow)" />
-              <use href="#path-use-eur" stroke="#CEFF1A" stroke-width="1.5" opacity="0.75" filter="url(#earthArcGlow)" />
-              <use href="#path-usw-use" stroke="#CEFF1A" stroke-width="1.3" opacity="0.65" filter="url(#earthArcGlow)" />
-              <use href="#path-sa-eur" stroke="#CEFF1A" stroke-width="1.4" opacity="0.7" filter="url(#earthArcGlow)" />
-              <use href="#path-eur-sat" stroke="url(#arcGradSpace)" stroke-width="1.4" opacity="0.75" filter="url(#earthArcGlow)" />
-              <use href="#path-asia-sat" stroke="url(#arcGradSpace)" stroke-width="1.4" opacity="0.75" filter="url(#earthArcGlow)" />
-              <use href="#path-sat-orbit" stroke="url(#arcGradSpace)" stroke-width="1.2" opacity="0.6" filter="url(#earthArcGlow)" />
+            <!-- ── 1. Subtle Baseline Track (Faint Network Structure) ── -->
+            <g fill="none" class="earth-line-base">
+              <path d="M 920,420 C 1000,295 1160,310 1280,545" />
+              <path d="M 1280,545 C 1345,595 1378,660 1368,744" />
+              <path d="M 920,420 C 1040,510 1220,470 1368,744" />
+              <path d="M 520,450 C 620,380 770,375 870,395" />
+              <path d="M 365,435 Q 440,415 520,450" />
+              <path d="M 535,635 C 660,500 810,480 920,420" />
+              <path d="M 920,420 C 1080,240 1220,180 1319,134" />
+              <path d="M 1280,545 C 1390,410 1380,230 1319,134" />
+              <path d="M 1319,134 C 1380,95 1460,110 1530,135" />
             </g>
 
-            <!-- ── 2. CONTINUOUS STREAMING LASER BEAMS (Moving dashed light beams) ── -->
-            <g fill="none" stroke-linecap="round">
+            <!-- ── 2. Moving Yellow Lines (Starts from A -> goes to B -> reverses back seamlessly) ── -->
+            <g fill="none" class="earth-line-active">
               <!-- Europe <-> East Asia -->
-              <use href="#path-eur-asia" stroke="#FFFFFF" stroke-width="2.2" class="earth-stream-fast" opacity="0.9" filter="url(#earthPulseGlow)" />
-              <use href="#path-eur-asia" stroke="#CEFF1A" stroke-width="2.0" class="earth-stream-rev" opacity="0.75" />
+              <path d="M 920,420 C 1000,295 1160,310 1280,545" pathLength="100" class="earth-line-surge-1" />
 
               <!-- East Asia <-> Australia -->
-              <use href="#path-asia-aus" stroke="#FFFFFF" stroke-width="2.2" class="earth-stream-medium" opacity="0.9" filter="url(#earthPulseGlow)" />
-              <use href="#path-asia-aus" stroke="#CEFF1A" stroke-width="1.8" class="earth-stream-rev" opacity="0.7" />
+              <path d="M 1280,545 C 1345,595 1378,660 1368,744" pathLength="100" class="earth-line-surge-2" />
 
               <!-- Europe <-> Australia -->
-              <use href="#path-eur-aus" stroke="#CEFF1A" stroke-width="2.0" class="earth-stream-slow" opacity="0.8" filter="url(#earthArcGlow)" />
+              <path d="M 920,420 C 1040,510 1220,470 1368,744" pathLength="100" class="earth-line-surge-3" />
 
-              <!-- Americas <-> Europe -->
-              <use href="#path-use-eur" stroke="#FFFFFF" stroke-width="2.0" class="earth-stream-medium" opacity="0.85" filter="url(#earthPulseGlow)" />
-              <use href="#path-sa-eur" stroke="#CEFF1A" stroke-width="1.8" class="earth-stream-slow" opacity="0.75" />
-              <use href="#path-usw-use" stroke="#CEFF1A" stroke-width="1.6" class="earth-stream-fast" opacity="0.7" />
+              <!-- Americas (US East) <-> Europe -->
+              <path d="M 520,450 C 620,380 770,375 870,395" pathLength="100" class="earth-line-surge-4" />
 
-              <!-- Arcs into Space / Satellite -->
-              <use href="#path-eur-sat" stroke="#FFFFFF" stroke-width="2.0" class="earth-stream-fast" opacity="0.85" filter="url(#earthPulseGlow)" />
-              <use href="#path-asia-sat" stroke="#CEFF1A" stroke-width="1.8" class="earth-stream-medium" opacity="0.8" />
-              <use href="#path-sat-orbit" stroke="#FFFFFF" stroke-width="1.6" class="earth-stream-fast" opacity="0.7" />
-            </g>
+              <!-- US West <-> US East -->
+              <path d="M 365,435 Q 440,415 520,450" pathLength="100" class="earth-line-surge-5" />
 
-            <!-- ── 3. TRAVELING LUMINOUS ENERGY PACKETS (Photons flying along paths) ── -->
-            <g>
-              <!-- Europe -> Asia Packet (Lead white photon + neon trail) -->
-              <circle r="3.5" fill="#FFFFFF" filter="url(#earthPulseGlow)">
-                <animateMotion dur="3.2s" repeatCount="indefinite">
-                  <mpath href="#path-eur-asia" />
-                </animateMotion>
-              </circle>
-              <circle r="2.4" fill="#CEFF1A" opacity="0.85" filter="url(#earthPulseGlow)">
-                <animateMotion dur="3.2s" begin="-0.07s" repeatCount="indefinite">
-                  <mpath href="#path-eur-asia" />
-                </animateMotion>
-              </circle>
-              <circle r="1.5" fill="#CEFF1A" opacity="0.5" filter="url(#earthPulseGlow)">
-                <animateMotion dur="3.2s" begin="-0.14s" repeatCount="indefinite">
-                  <mpath href="#path-eur-asia" />
-                </animateMotion>
-              </circle>
+              <!-- South America <-> Europe -->
+              <path d="M 535,635 C 660,500 810,480 920,420" pathLength="100" class="earth-line-surge-1" style="animation-delay: -1.4s;" />
 
-              <!-- Asia -> Europe Return Packet -->
-              <circle r="3.2" fill="#EAFF4F" filter="url(#earthPulseGlow)">
-                <animateMotion dur="3.8s" begin="1.6s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear">
-                  <mpath href="#path-eur-asia" />
-                </animateMotion>
-              </circle>
-              <circle r="2" fill="#CEFF1A" opacity="0.8" filter="url(#earthPulseGlow)">
-                <animateMotion dur="3.8s" begin="1.53s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear">
-                  <mpath href="#path-eur-asia" />
-                </animateMotion>
-              </circle>
+              <!-- Europe <-> Satellite Orbit -->
+              <path d="M 920,420 C 1080,240 1220,180 1319,134" pathLength="100" class="earth-line-surge-2" style="animation-delay: -0.9s;" />
 
-              <!-- Asia -> Australia Packet -->
-              <circle r="3.5" fill="#FFFFFF" filter="url(#earthPulseGlow)">
-                <animateMotion dur="2.4s" repeatCount="indefinite">
-                  <mpath href="#path-asia-aus" />
-                </animateMotion>
-              </circle>
-              <circle r="2.2" fill="#CEFF1A" opacity="0.8" filter="url(#earthPulseGlow)">
-                <animateMotion dur="2.4s" begin="-0.06s" repeatCount="indefinite">
-                  <mpath href="#path-asia-aus" />
-                </animateMotion>
-              </circle>
+              <!-- East Asia <-> Satellite Orbit -->
+              <path d="M 1280,545 C 1390,410 1380,230 1319,134" pathLength="100" class="earth-line-surge-3" style="animation-delay: -1.7s;" />
 
-              <!-- Australia -> Asia Return Packet -->
-              <circle r="3" fill="#EAFF4F" filter="url(#earthPulseGlow)">
-                <animateMotion dur="2.9s" begin="1.2s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear">
-                  <mpath href="#path-asia-aus" />
-                </animateMotion>
-              </circle>
-
-              <!-- Europe -> Australia Southern Packet -->
-              <circle r="3" fill="#FFFFFF" filter="url(#earthPulseGlow)">
-                <animateMotion dur="4.2s" begin="0.8s" repeatCount="indefinite">
-                  <mpath href="#path-eur-aus" />
-                </animateMotion>
-              </circle>
-
-              <!-- US East -> Europe Atlantic Packet -->
-              <circle r="3.2" fill="#FFFFFF" filter="url(#earthPulseGlow)">
-                <animateMotion dur="3.4s" begin="0.4s" repeatCount="indefinite">
-                  <mpath href="#path-use-eur" />
-                </animateMotion>
-              </circle>
-
-              <!-- South America -> Europe Packet -->
-              <circle r="2.8" fill="#CEFF1A" filter="url(#earthPulseGlow)">
-                <animateMotion dur="3.6s" begin="1.8s" repeatCount="indefinite">
-                  <mpath href="#path-sa-eur" />
-                </animateMotion>
-              </circle>
-
-              <!-- US West -> US East Packet -->
-              <circle r="2.6" fill="#FFFFFF" filter="url(#earthPulseGlow)">
-                <animateMotion dur="2.2s" begin="0.2s" repeatCount="indefinite">
-                  <mpath href="#path-usw-use" />
-                </animateMotion>
-              </circle>
-
-              <!-- Earth -> Space Satellite Packets -->
-              <circle r="3.5" fill="#FFFFFF" filter="url(#earthPulseGlow)">
-                <animateMotion dur="3.0s" begin="0.6s" repeatCount="indefinite">
-                  <mpath href="#path-eur-sat" />
-                </animateMotion>
-              </circle>
-              <circle r="3" fill="#EAFF4F" filter="url(#earthPulseGlow)">
-                <animateMotion dur="3.4s" begin="1.8s" repeatCount="indefinite">
-                  <mpath href="#path-asia-sat" />
-                </animateMotion>
-              </circle>
-
-              <!-- Deep Space Stream Out into Orbit -->
-              <circle r="2.5" fill="#FFFFFF" filter="url(#earthPulseGlow)">
-                <animateMotion dur="2.0s" begin="0.1s" repeatCount="indefinite">
-                  <mpath href="#path-sat-orbit" />
-                </animateMotion>
-              </circle>
-            </g>
-
-            <!-- ── 4. PULSING HUB BEACONS (Pings on city nodes coming out of Earth) ── -->
-            <g>
-              <!-- Central Europe Node (920, 420) -->
-              <circle cx="920" cy="420" r="4" fill="none" stroke="#CEFF1A" stroke-width="1.8" class="earth-ping-ring" />
-              <circle cx="920" cy="420" r="7" fill="#CEFF1A" opacity="0.35" filter="url(#earthNodeGlow)" />
-              <circle cx="920" cy="420" r="4.5" fill="#CEFF1A" filter="url(#earthPulseGlow)" />
-              <circle cx="920" cy="420" r="2.2" fill="#FFFFFF" />
-
-              <!-- Western Europe Node (870, 395) -->
-              <circle cx="870" cy="395" r="3.5" fill="none" stroke="#CEFF1A" stroke-width="1.5" class="earth-ping-ring" style="animation-delay: 0.8s;" />
-              <circle cx="870" cy="395" r="4" fill="#CEFF1A" filter="url(#earthPulseGlow)" />
-              <circle cx="870" cy="395" r="2" fill="#FFFFFF" />
-
-              <!-- East Asia Node (1280, 545) -->
-              <circle cx="1280" cy="545" r="4" fill="none" stroke="#CEFF1A" stroke-width="1.8" class="earth-ping-ring" style="animation-delay: 0.5s;" />
-              <circle cx="1280" cy="545" r="7" fill="#CEFF1A" opacity="0.35" filter="url(#earthNodeGlow)" />
-              <circle cx="1280" cy="545" r="4.5" fill="#CEFF1A" filter="url(#earthPulseGlow)" />
-              <circle cx="1280" cy="545" r="2.2" fill="#FFFFFF" />
-
-              <!-- Australia Node (1368, 744) -->
-              <circle cx="1368" cy="744" r="4" fill="none" stroke="#CEFF1A" stroke-width="1.8" class="earth-ping-ring" style="animation-delay: 1.1s;" />
-              <circle cx="1368" cy="744" r="7" fill="#CEFF1A" opacity="0.35" filter="url(#earthNodeGlow)" />
-              <circle cx="1368" cy="744" r="4.5" fill="#CEFF1A" filter="url(#earthPulseGlow)" />
-              <circle cx="1368" cy="744" r="2.2" fill="#FFFFFF" />
-
-              <!-- US East Node (520, 450) -->
-              <circle cx="520" cy="450" r="3.5" fill="none" stroke="#CEFF1A" stroke-width="1.5" class="earth-ping-ring" style="animation-delay: 1.4s;" />
-              <circle cx="520" cy="450" r="4" fill="#CEFF1A" filter="url(#earthPulseGlow)" />
-              <circle cx="520" cy="450" r="2" fill="#FFFFFF" />
-
-              <!-- US West Node (365, 435) -->
-              <circle cx="365" cy="435" r="3" fill="none" stroke="#CEFF1A" stroke-width="1.2" class="earth-ping-ring" style="animation-delay: 1.9s;" />
-              <circle cx="365" cy="435" r="3.5" fill="#CEFF1A" filter="url(#earthPulseGlow)" />
-              <circle cx="365" cy="435" r="1.8" fill="#FFFFFF" />
-
-              <!-- South America Node (535, 635) -->
-              <circle cx="535" cy="635" r="3.5" fill="none" stroke="#CEFF1A" stroke-width="1.5" class="earth-ping-ring" style="animation-delay: 0.7s;" />
-              <circle cx="535" cy="635" r="4" fill="#CEFF1A" filter="url(#earthPulseGlow)" />
-              <circle cx="535" cy="635" r="2" fill="#FFFFFF" />
-
-              <!-- Orbiting Satellite Beacon (1319, 134) -->
-              <circle cx="1319" cy="134" r="5" fill="none" stroke="#CEFF1A" stroke-width="1.5" class="earth-ping-ring" style="animation-delay: 0.3s;" />
-              <circle cx="1319" cy="134" r="4" fill="#FFFFFF" filter="url(#earthPulseGlow)" />
-              <circle cx="1319" cy="134" r="2" fill="#CEFF1A" />
+              <!-- Satellite <-> Deep Space Orbit -->
+              <path d="M 1319,134 C 1380,95 1460,110 1530,135" pathLength="100" class="earth-line-surge-4" style="animation-delay: -0.5s;" />
             </g>
           </svg>
         </div>
